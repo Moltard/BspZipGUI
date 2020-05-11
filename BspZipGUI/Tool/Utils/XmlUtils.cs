@@ -28,7 +28,6 @@ namespace BspZipGUI.Tool.Utils
             {
                 // If it doesn't exist, we load it from the embedded ressource and recreate it
                 string xmlText = FilesUtils.ReadResourceFile(xmlSettingsBackup);
-                Console.WriteLine(xmlText);
                 settings = DeserializeSettings(xmlText);
                 FilesUtils.WriteAllText(xmlSettings, xmlText);
             }
