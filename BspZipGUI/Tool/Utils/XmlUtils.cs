@@ -10,7 +10,7 @@ namespace BspZipGUI.Tool.Utils
     static class XmlUtils
     {
         public const string xmlSettings = "settings.xml";
-        private const string xmlSettingsBackup = "BspZip.settings_backup.txt";
+        private const string xmlSettingsBackup = "BspZipGUI.settings_backup.txt";
 
         /// <summary>
         /// Get the settings of the application or recreate them if they don't exist
@@ -28,6 +28,7 @@ namespace BspZipGUI.Tool.Utils
             {
                 // If it doesn't exist, we load it from the embedded ressource and recreate it
                 string xmlText = FilesUtils.ReadResourceFile(xmlSettingsBackup);
+                Console.WriteLine(xmlText);
                 settings = DeserializeSettings(xmlText);
                 FilesUtils.WriteAllText(xmlSettings, xmlText);
             }
@@ -50,9 +51,7 @@ namespace BspZipGUI.Tool.Utils
                     settings = (Settings)serializer.Deserialize(reader);
                 }
             }
-            catch (Exception e) {
-                Console.WriteLine(e.ToString());
-            }
+            catch { }
             return settings;
         }
 
@@ -64,12 +63,16 @@ namespace BspZipGUI.Tool.Utils
         public static Settings DeserializeSettings(string xmlText)
         {
             Settings settings = null;
-            using (var reader = new System.IO.StringReader(xmlText))
+            try
             {
-                var serializer = new XmlSerializer(typeof(Settings));
-                settings = (Settings)serializer.Deserialize(reader);
+                using (var reader = new System.IO.StringReader(xmlText))
+                {
+                    var serializer = new XmlSerializer(typeof(Settings));
+                    settings = (Settings)serializer.Deserialize(reader);
+                }
             }
-            return null;
+            catch { }
+            return settings;
         }
 
 
