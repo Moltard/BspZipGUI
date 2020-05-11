@@ -23,12 +23,15 @@ Press Pack Bsp.
 
 ## How to setup
 
-Add new games with the Add... button. Delete them with the Delete button.
+Add new games with the 'Add...' button. Delete them with the 'Delete' button.
+
 Setup your games by loading the gameinfo.txt and bspzip.exe.
 
 <img src="Images/SettingsMenu.jpg" width="60%" />
 
-Add custom folders with all the content that should be packed in the map.
+Add new custom folders with the 'Add...' button. Delete them with the 'Delete' button.
+
+Load the folder with the custom files that you want to embed in your map.
 
 <img src="Images/SettingsCustomFolder.jpg" width="60%" />
 
