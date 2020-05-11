@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LastBsp />
+  <LastGame>Counter-Strike: Global Offensive</LastGame>
+  <LastCustomDirectory>My Current Project</LastCustomDirectory>
+  <BspZipDirectories>
+    <Game>
+      <Name>Counter-Strike: Source</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Source\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Source\cstrike\gameinfo.txt</GameInfo>
+    </Game>
+    <Game>
+      <Name>Counter-Strike: Global Offensive</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gameinfo.txt</GameInfo>
+    </Game>
+    <Game>
+      <Name>Half-Life 2</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Half-Life 2\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Half-Life 2\hl2\gameinfo.txt</GameInfo>
+    </Game>
+  </BspZipDirectories>
+  <CustomFilesDirectories>
+    <Map>
+      <Name>My Current Project</Name>
+      <Path>C:/MyMappingProject/CurrentProject/</Path>
+    </Map>
+  </CustomFilesDirectories>
+  <WhiteListDirectories>
+    <Directory>
+      <DirectoryName>cfg</DirectoryName>
+      <Extensions>
+        <Extension>.cfg</Extension>
+        <Extension>.txt</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>maps</DirectoryName>
+      <Extensions>
+        <Extension>.txt</Extension>
+        <Extension>.kv</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>materials</DirectoryName>
+      <Extensions>
+        <Extension>.vmt</Extension>
+        <Extension>.vtf</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>models</DirectoryName>
+      <Extensions>
+        <Extension>.mdl</Extension>
+        <Extension>.phy</Extension>
+        <Extension>.vtx</Extension>
+        <Extension>.vvd</Extension>
+        <Extension>.ani</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>particles</DirectoryName>
+      <Extensions>
+        <Extension>.pcf</Extension>
+        <Extension>.txt</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>resource</DirectoryName>
+      <Extensions>
+        <Extension>.dds</Extension>
+        <Extension>.txt</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>scripts</DirectoryName>
+      <Extensions>
+        <Extension>.lua</Extension>
+        <Extension>.nut</Extension>
+        <Extension>.txt</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>sound</DirectoryName>
+      <Extensions>
+        <Extension>.mp3</Extension>
+        <Extension>.txt</Extension>
+        <Extension>.wav</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>materials/panorama/images/map_icons/screenshots/</DirectoryName>
+      <Extensions>
+        <Extension>.png</Extension>
+      </Extensions>
+    </Directory>
+  </WhiteListDirectories>
+</AppSettings>
