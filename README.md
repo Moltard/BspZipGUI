@@ -1,5 +1,9 @@
 # BspZipGUI
-A clean tool to pack BSP files using Valve's bspzip.exe.
+A clean GUI tool that use Valve's BSPZIP command line utility. It is used to embed a folder with custom files (materials, models, sound,..) into a BSP file.
+
+It can be used for any Source Engine game that provide a bspzip.exe.
+
+This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/BspZipGui) .
 
 ## Downloads
 
@@ -7,7 +11,8 @@ A clean tool to pack BSP files using Valve's bspzip.exe.
 
 ## How to use
 
-Select a game, a custom folder you defined and load a bsp file.
+Select a game you defined (3 are setup per default), a custom folder you defined and load a BSP.
+
 Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
 
 <img src="Images/MainMenu.jpg" width="60%" />
@@ -18,6 +23,7 @@ Press Pack Bsp.
 
 ## How to setup
 
+Add new games with the Add... button. Delete them with the Delete button.
 Setup your games by loading the gameinfo.txt and bspzip.exe.
 
 <img src="Images/SettingsMenu.jpg" width="60%" />
