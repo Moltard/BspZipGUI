@@ -58,6 +58,7 @@ namespace BspZipGUI
             ToolSettings = XmlUtils.GetSettings();
             if (ToolSettings != null)
             {
+                // Init all attributes that were null, and delete the game and mapconfigs that are invalid
                 ToolSettings.InitAllAttributes();
 
                 // Init the Games combobox and set the last game used (if possible)
@@ -441,8 +442,11 @@ namespace BspZipGUI
         {
             string fileName = FilesUtils.OpenFileDialog(FileFilters.Bsp);
             if (fileName != null)
+            {
                 BspFileTextBox.Text = fileName;
+            }
         }
+
 
 
         private void PackBspButton_Click(object sender, RoutedEventArgs e)
@@ -454,56 +458,69 @@ namespace BspZipGUI
 
             if (game != null)
             {
-                if (map != null)
+                if (game.FilesExist())
                 {
-                    if (System.IO.File.Exists(bspPath))
+                    if (map != null)
                     {
-                        if (FilesUtils.IsExtension(bspPath, FilesUtils.ExtensionBsp))
+                        if (map.DirectoryExists())
                         {
-                            bool continueProcess = true;
-                            if (!restrictions)
+                            if (System.IO.File.Exists(bspPath))
                             {
-                                string message = string.Format("You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory.\nAre you really sure ?\n(Be careful not to use a path like C:\\)", map.Path);
-                                MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                                switch (result)
+                                if (FilesUtils.IsExtension(bspPath, FilesUtils.ExtensionBsp))
                                 {
-                                    case MessageBoxResult.Yes:
-                                        break;
-                                    case MessageBoxResult.No:
-                                        continueProcess = false;
-                                        break;
+                                    bool continueProcess = true;
+                                    if (!restrictions)
+                                    {
+                                        string message = string.Format("You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory.\nAre you really sure ?\n(Be careful not to use a path like C:\\)", map.Path);
+                                        MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                        switch (result)
+                                        {
+                                            case MessageBoxResult.Yes:
+                                                break;
+                                            case MessageBoxResult.No:
+                                                continueProcess = false;
+                                                break;
+                                        }
+                                    }
+
+                                    if (continueProcess)
+                                    {
+                                        string mapName = System.IO.Path.GetFileName(bspPath);
+                                        string message = string.Format("Pack {0} using {1} ?", mapName, map.Path);
+                                        MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                        switch (result)
+                                        {
+                                            case MessageBoxResult.Yes:
+                                                ExecutePackBsp(game, map, bspPath, restrictions);
+                                                break;
+                                            case MessageBoxResult.No:
+                                                break;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The file is not .bsp", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                                 }
                             }
-
-                            if (continueProcess)
+                            else
                             {
-                                string mapName = System.IO.Path.GetFileName(bspPath);
-                                string message = string.Format("Pack {0} using {1} ?", mapName, map.Path);
-                                MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
-                                switch (result)
-                                {
-                                    case MessageBoxResult.Yes:
-                                        ExecutePackBsp(game, map, bspPath, restrictions);
-                                        break;
-                                    case MessageBoxResult.No:
-                                        break;
-                                }
+                                MessageBox.Show("The file doesn't exist", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }
                         }
                         else
                         {
-                            MessageBox.Show("The file is not .bsp", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show("The Custom Folder doesn't exist", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
-
                     }
                     else
                     {
-                        MessageBox.Show("The file doesn't exist", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Invalid Custom Folder selected", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid Custom Folder selected", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Can't find the specified bspzip.exe and/or gameinfo.txt", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             else

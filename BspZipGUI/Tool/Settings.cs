@@ -98,7 +98,7 @@ namespace BspZipGUI.Tool
         }
 
         /// <summary>
-        /// Init the attributes that werent init by the xml (cause of missing parameters)
+        /// Init the attributes that werent init by the xml (cause of missing parameters). And delete invalid ones
         /// </summary>
         public void InitAllAttributes()
         {
@@ -106,14 +106,48 @@ namespace BspZipGUI.Tool
             {
                 InitGamesConfigs();
             }
+            else
+            {
+                // Delete any invalid game config (missing data that was removed from the xml)
+                for (int i = GamesConfigs.Count - 1; i >= 0; i--)
+                {
+                    if (!GamesConfigs[i].IsValid())
+                    {
+                        GamesConfigs.RemoveAt(i);
+                    }
+                }
+            }
             if (MapsConfigs == null)
             {
                 InitMapsConfigs();
+            }
+            else
+            {
+                // Delete any invalid map config (missing data that was removed from the xml)
+                for (int i = MapsConfigs.Count - 1; i >= 0; i--)
+                {
+                    if (!MapsConfigs[i].IsValid())
+                    {
+                        MapsConfigs.RemoveAt(i);
+                    }
+                }
             }
             if (DirectoriesRestrictions == null)
             {
                 InitDirectoriesRestrictions();
             }
+            else
+            {
+                // Delete any invalid directory restriction (missing data that was removed from the xml)
+                for (int i = DirectoriesRestrictions.Count - 1; i >= 0; i--)
+                {
+                    if (!DirectoriesRestrictions[i].IsValid())
+                    {
+                        DirectoriesRestrictions.RemoveAt(i);
+                    }
+                }
+            }
+
             if (LastBsp == null)
             {
                 LastBsp = "";
@@ -230,11 +264,38 @@ namespace BspZipGUI.Tool
                 }
             }
         }
-
+        
         /// <summary>
         /// Path to the folder of gameinfo.txt
         /// </summary>
         public string GameInfoFolder { get { return System.IO.Path.GetDirectoryName(GameInfo); } }
+
+        /// <summary>
+        /// Return true if all values of the GameConfig are not null, false otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool IsValid()
+        {
+            if (Name != null && BspZip != null && GameInfo != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Return true if the files used exist
+        /// </summary>
+        /// <returns></returns>
+        public bool FilesExist()
+        {
+            if (System.IO.File.Exists(BspZip) && System.IO.File.Exists(GameInfo))
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -311,6 +372,31 @@ namespace BspZipGUI.Tool
             Path = Utils.FilesUtils.GetDirectoryName(Path + Utils.FilesUtils.slash);
         }
 
+        /// <summary>
+        /// Return true if all values of the MapConfig are not null, false otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool IsValid()
+        {
+            if (Name != null && Path != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Return true if the custom directory exist
+        /// </summary>
+        /// <returns></returns>
+        public bool DirectoryExists()
+        {
+            if (System.IO.Directory.Exists(Path))
+            {
+                return true;
+            }
+            return false;
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -387,7 +473,20 @@ namespace BspZipGUI.Tool
                 AllowedExtension = new List<string>(value.Split(separator));
             }
         }
-        
+
+        /// <summary>
+        /// Return true if all values of the DirectoryRestrictions are not null, false otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool IsValid()
+        {
+            if (DirectoryName != null && AllowedExtension != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
