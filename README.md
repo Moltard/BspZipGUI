@@ -7,7 +7,7 @@ It can be used for any Source Engine game that provide a bspzip.exe.
 
 This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/BspZipGui) .
 
-## Downloads
+## Download
 
 [BspZipGUI v1.0](https://github.com/Moltard/BspZipGUI/releases/latest)
 
