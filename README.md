@@ -1,6 +1,8 @@
 # BspZipGUI
 A clean GUI tool that use Valve's BSPZIP command line utility. It is used to embed a folder with custom files (materials, models, sound,..) into a BSP file.
 
+<img src="Images/ExampleCustomFolder.jpg" width="60%" />
+
 It can be used for any Source Engine game that provide a bspzip.exe.
 
 This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/BspZipGui) .
