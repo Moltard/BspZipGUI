@@ -88,8 +88,14 @@
         <Extension>.wav</Extension>
       </Extensions>
     </Directory>
+	<Directory>
+      <DirectoryName>materials/correction</DirectoryName>
+      <Extensions>
+        <Extension>.raw</Extension>
+      </Extensions>
+    </Directory>
     <Directory>
-      <DirectoryName>materials/panorama/images/map_icons/screenshots/</DirectoryName>
+      <DirectoryName>materials/panorama/images/map_icons/screenshots</DirectoryName>
       <Extensions>
         <Extension>.png</Extension>
       </Extensions>

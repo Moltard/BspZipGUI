@@ -471,7 +471,7 @@ namespace BspZipGUI
                                     bool continueProcess = true;
                                     if (!restrictions)
                                     {
-                                        string message = string.Format("You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory.\nAre you really sure ?\n(Be careful not to use a path like C:\\)", map.Path);
+                                        string message = string.Format("You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory and subdirectories.\nAre you really sure ?\n(Be careful not to use a path like C:\\)", map.Path);
                                         MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                                         switch (result)
                                         {
