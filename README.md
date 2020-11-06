@@ -19,7 +19,7 @@ Select a game you defined (3 are setup per default), a custom folder you defined
 
 Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
 
-<img src="Images/MainMenu.jpg" width="60%" />
+<img src="Images/MainMenuNew.jpg" width="60%" />
 
 Press Pack Bsp.
 
