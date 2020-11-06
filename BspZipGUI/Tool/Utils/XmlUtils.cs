@@ -9,9 +9,14 @@ namespace BspZipGUI.Tool.Utils
 {
     static class XmlUtils
     {
-        public const string xmlSettings = "settings.xml";
-        private const string xmlSettingsBackup = "BspZipGUI.settings_backup.txt";
+        #region Constants
 
+        private const string XmlSettings = "settings.xml";
+        private const string XmlSettingsBackup = "BspZipGUI.settings_backup.txt";
+
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Get the settings of the application or recreate them if they don't exist
         /// </summary>
@@ -19,7 +24,7 @@ namespace BspZipGUI.Tool.Utils
         public static Settings GetSettings()
         {
             Settings settings = null;
-            if (System.IO.File.Exists(xmlSettings))
+            if (System.IO.File.Exists(XmlSettings))
             {
                 // If settings.xml exist, we load it
                 settings = DeserializeSettings();
@@ -27,9 +32,9 @@ namespace BspZipGUI.Tool.Utils
             else
             {
                 // If it doesn't exist, we load it from the embedded ressource and recreate it
-                string xmlText = FilesUtils.ReadResourceFile(xmlSettingsBackup);
+                string xmlText = FilesUtils.ReadResourceFile(XmlSettingsBackup);
                 settings = DeserializeSettings(xmlText);
-                FilesUtils.WriteAllText(xmlSettings, xmlText);
+                FilesUtils.WriteAllText(XmlSettings, xmlText);
             }
             return settings;
         }
@@ -44,7 +49,7 @@ namespace BspZipGUI.Tool.Utils
             Settings settings = null;
             try
             {
-                using (var reader = new System.IO.StreamReader(xmlSettings))
+                using (var reader = new System.IO.StreamReader(XmlSettings))
                 {
                     var serializer = new XmlSerializer(typeof(Settings));
                     settings = (Settings)serializer.Deserialize(reader);
@@ -86,7 +91,7 @@ namespace BspZipGUI.Tool.Utils
                 var xmlWritterSettings = new System.Xml.XmlWriterSettings() { Indent = true };
                 try
                 {
-                    using (var writer = new System.IO.StreamWriter(xmlSettings))
+                    using (var writer = new System.IO.StreamWriter(XmlSettings))
                     using (var xmlWriter = System.Xml.XmlWriter.Create(writer, xmlWritterSettings))
                     {
                         var serializer = new XmlSerializer(typeof(Settings));
@@ -98,6 +103,8 @@ namespace BspZipGUI.Tool.Utils
             }
             return false;
         }
+
+        #endregion
 
     }
 }

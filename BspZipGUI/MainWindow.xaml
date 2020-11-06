@@ -24,7 +24,14 @@
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="FontSize" Value="18"/>
         </Style>
-
+        
+        <Style TargetType="TextBlock" x:Key="PageDescription">
+            <Setter Property="Margin" Value="10 0 10 0"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+        
 
         <Style TargetType="TextBlock" x:Key="ToolOptionLabel">
             <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
@@ -78,12 +85,12 @@
             <TextBlock Text="{Binding Path=DirectoryName}"/>
         </DataTemplate>
         
-        
     </Window.Resources>
-
+    
     <Border Padding="5" Background="{StaticResource BG_Color}">
         <StackPanel>
             <TabControl Name="MainTabControl" BorderThickness="2" Height="450" Background="{StaticResource BG_Color}">
+                
                 <TabItem Name="BspPackerTab">
                     <TabItem.Header>
                         <TextBlock Text="Bsp Packer"/>
@@ -158,7 +165,69 @@
 
 
                 </TabItem>
-                
+
+                <TabItem Name="BspRepackTab">
+                    <TabItem.Header>
+                        <TextBlock Text="Bsp Repack"/>
+                    </TabItem.Header>
+
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource PageTitle}">Bsp Repack</TextBlock>
+
+                        <TextBlock Style="{StaticResource PageDescription}">
+                            Repack the BSP to compress it (or decompress it)<LineBreak/>
+                            Compressing may take several seconds depending of the size of the BSP<LineBreak/>
+                            Not available for every game (e.g. CS:GO)
+                        </TextBlock>
+                        <Separator Margin="{StaticResource MarginSeparator}"/>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Game" />
+                            <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="RepackGameComboBox" SelectionChanged="RepackGameComboBox_SelectionChanged" 
+                                     ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackGameLinkButton" Click="GameLinkButton_Click">
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Setup Games"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Bsp File" />
+                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="RepackBspFileTextBox" TextChanged="RepackBspFileTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="RepackBspFileTextBox_Drop" />
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackBspFileBrowseButton" Click="RepackBspFileBrowseButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="1" Style="{StaticResource ToolPackButton}" Name="RepackCompressBspButton" IsEnabled="False" Click="RepackCompressBspButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Compress Bsp"/>
+                            </Button>
+                            <Button Grid.Column="2" Style="{StaticResource ToolPackButton}" Name="RepackDecompressBspButton" IsEnabled="False" Click="RepackDecompressBspButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Decompress Bsp"/>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </TabItem>
+
                 <TabItem Name="LogsTab">
                     <TabItem.Header>
                         <TextBlock Text="Logs"/>
@@ -169,10 +238,9 @@
 
                         <TextBox Opacity="0.7" Style="{StaticResource ToolLogsTextBox}" Name="LogsTextBox" Text="{Binding Text, Mode=OneWay}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
 
-
-
                     </StackPanel>
                 </TabItem>
+
                 <TabItem Name="SettingsTab">
                     <TabItem.Header>
                         <TextBlock Text="Settings"/>
@@ -249,8 +317,8 @@
                                             </Button>
                                         </Grid>
                                     </StackPanel>
-                                    
-                                    
+
+
                                 </StackPanel>
                             </TabItem>
                             <TabItem Name="SettingsCustomFoldersTab">
@@ -307,7 +375,7 @@
                                             </Button>
                                         </Grid>
                                     </StackPanel>
-                                    
+
 
                                 </StackPanel>
                             </TabItem>
@@ -362,10 +430,9 @@
                                             </Button>
                                         </Grid>
                                     </StackPanel>
-                                    
+
                                 </StackPanel>
                             </TabItem>
-
 
                         </TabControl>
 
@@ -374,10 +441,10 @@
                                 <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Save Settings"/>
                             </Button>
                         </Grid>
-                       
 
                     </StackPanel>
                 </TabItem>
+
             </TabControl>
         </StackPanel>
     </Border>

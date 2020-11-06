@@ -26,12 +26,15 @@ namespace BspZipGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Settings ToolSettings;
-        
-        public StringHolder sh = new StringHolder();
-        //public StringBuilderHolder sbh = new StringBuilderHolder();
 
-        private const string MessageBoxTitle = "BspZipGUI";
+        #region Attributes
+
+        private StringHolder stringHolderLog = new StringHolder();
+        private Settings toolSettings;
+
+        #endregion
+
+        #region Constructor
 
         public MainWindow()
         {
@@ -40,26 +43,24 @@ namespace BspZipGUI
             InitSettings();
 
             InitLogs();
-
         }
 
-        //-------------------------------------
-        //------------- Init GUI --------------
-        //-------------------------------------
+        #endregion
+
+        #region Initialize GUI
 
         private void InitLogs()
         {
-            LogsTextBox.DataContext = sh;
-            //LogsTextBox.DataContext = sbh;
+            LogsTextBox.DataContext = stringHolderLog;
         }
 
         private void InitSettings()
         {
-            ToolSettings = XmlUtils.GetSettings();
-            if (ToolSettings != null)
+            toolSettings = XmlUtils.GetSettings();
+            if (toolSettings != null)
             {
                 // Init all attributes that were null, and delete the game and mapconfigs that are invalid
-                ToolSettings.InitAllAttributes();
+                toolSettings.InitAllAttributes();
 
                 // Init the Games combobox and set the last game used (if possible)
                 InitGamesComboBox();
@@ -68,7 +69,8 @@ namespace BspZipGUI
                 InitCustomFoldersComboBox();
 
                 // Set the last BSP loaded (if possible)
-                BspFileTextBox.Text = ToolSettings.LastBsp;
+                BspFileTextBox.Text = toolSettings.LastBsp;
+                RepackBspFileTextBox.Text = toolSettings.LastBsp;
 
                 // Init the whitelist combobox
                 InitDirectoryRestrictionsComboBox();
@@ -76,19 +78,20 @@ namespace BspZipGUI
             }
         }
 
-        // **************
-        //     Games
-        // **************
+        #endregion
+
+        #region Handlers Games GUI
 
         /// <summary>
         /// Init the datacontext of the game combobox and set the selection to a default value
         /// </summary>
         private void InitGamesComboBox()
         {
-            GameComboBox.DataContext = ToolSettings.GamesConfigs;
-            SettingsGameComboBox.DataContext = ToolSettings.GamesConfigs;
+            GameComboBox.DataContext = toolSettings.GamesConfigs;
+            RepackGameComboBox.DataContext = toolSettings.GamesConfigs;
+            SettingsGameComboBox.DataContext = toolSettings.GamesConfigs;
 
-            GameConfig game = ToolSettings.FindGameConfig(ToolSettings.LastGame);
+            GameConfig game = toolSettings.FindGameConfig(toolSettings.LastGame);
             if (game != null)
             {
                 GameSetSelected(game);
@@ -106,6 +109,7 @@ namespace BspZipGUI
         private void GameSetSelected(GameConfig game)
         {
             GameComboBox.SelectedItem = game;
+            RepackGameComboBox.SelectedItem = game;
             SettingsGameComboBox.SelectedItem = game;
         }
 
@@ -114,9 +118,9 @@ namespace BspZipGUI
         /// </summary>
         private void GamesForceSelect()
         {
-            if (ToolSettings.GamesConfigs.Count > 0)
+            if (toolSettings.GamesConfigs.Count > 0)
             {
-                GameSetSelected(ToolSettings.GamesConfigs[0]);
+                GameSetSelected(toolSettings.GamesConfigs[0]);
             }
             else
             {
@@ -129,33 +133,35 @@ namespace BspZipGUI
         /// </summary>
         private void GamesListUpdateGUI()
         {
-            if (ToolSettings.GamesConfigs.Count > 0)
+            if (toolSettings.GamesConfigs.Count > 0)
             {
                 GameComboBox.IsEnabled = true;
+                RepackGameComboBox.IsEnabled = true;
                 SettingsGameComboBox.IsEnabled = true;
                 SettingsGamesContainer.Visibility = Visibility.Visible;
             }
             else
             {
                 GameComboBox.IsEnabled = false;
+                RepackGameComboBox.IsEnabled = false;
                 SettingsGameComboBox.IsEnabled = false;
                 SettingsGamesContainer.Visibility = Visibility.Hidden;
             }
         }
 
-        // **************
-        // Custom Folder
-        // **************
+        #endregion
+
+        #region Handlers Custom Folder GUI
 
         /// <summary>
         /// Init the datacontext of the custom folder combobox and set the selection to a default value
         /// </summary>
         private void InitCustomFoldersComboBox()
         {
-            CustomFolderComboBox.DataContext = ToolSettings.MapsConfigs;
-            SettingsCustomFolderComboBox.DataContext = ToolSettings.MapsConfigs;
+            CustomFolderComboBox.DataContext = toolSettings.MapsConfigs;
+            SettingsCustomFolderComboBox.DataContext = toolSettings.MapsConfigs;
 
-            MapConfig map = ToolSettings.FindMapConfig(ToolSettings.LastCustomDirectory);
+            MapConfig map = toolSettings.FindMapConfig(toolSettings.LastCustomDirectory);
             if (map != null)
             {
                 CustomFolderSetSelected(map);
@@ -180,9 +186,9 @@ namespace BspZipGUI
         /// </summary>
         private void CustomFoldersForceSelect()
         {
-            if (ToolSettings.MapsConfigs.Count > 0)
+            if (toolSettings.MapsConfigs.Count > 0)
             {
-                CustomFolderSetSelected(ToolSettings.MapsConfigs[0]);
+                CustomFolderSetSelected(toolSettings.MapsConfigs[0]);
             }
             else
             {
@@ -195,7 +201,7 @@ namespace BspZipGUI
         /// </summary>
         private void CustomFoldersListUpdateGUI()
         {
-            if (ToolSettings.MapsConfigs.Count > 0)
+            if (toolSettings.MapsConfigs.Count > 0)
             {
                 CustomFolderComboBox.IsEnabled = true;
                 SettingsCustomFolderComboBox.IsEnabled = true;
@@ -209,17 +215,16 @@ namespace BspZipGUI
             }
         }
 
+        #endregion
 
-        // **********
-        // Whitelist
-        // **********
+        #region Handlers Whitelist GUI
 
         /// <summary>
         /// Init the datacontext of the whitelist directory combobox and set the selection to a default value
         /// </summary>
         private void InitDirectoryRestrictionsComboBox()
         {
-            SettingsWhitelistComboBox.DataContext = ToolSettings.DirectoriesRestrictions;
+            SettingsWhitelistComboBox.DataContext = toolSettings.DirectoriesRestrictions;
             DirectoryRestrictionsForceSelect();
         }
 
@@ -237,9 +242,9 @@ namespace BspZipGUI
         /// </summary>
         private void DirectoryRestrictionsForceSelect()
         {
-            if (ToolSettings.DirectoriesRestrictions.Count > 0)
+            if (toolSettings.DirectoriesRestrictions.Count > 0)
             {
-                DirectoryRestrictionsSetSelected(ToolSettings.DirectoriesRestrictions[0]);
+                DirectoryRestrictionsSetSelected(toolSettings.DirectoriesRestrictions[0]);
             }
             else
             {
@@ -252,7 +257,7 @@ namespace BspZipGUI
         /// </summary>
         private void DirectoryRestrictionsListUpdateGUI()
         {
-            if (ToolSettings.DirectoriesRestrictions.Count > 0)
+            if (toolSettings.DirectoriesRestrictions.Count > 0)
             {
                 SettingsWhitelistComboBox.IsEnabled = true;
                 SettingsWhitelistContainer.Visibility = Visibility.Visible;
@@ -264,9 +269,9 @@ namespace BspZipGUI
             }
         }
 
-        //-------------------------------------
-        //------- Events Drag and Drop --------
-        //-------------------------------------
+        #endregion
+
+        #region Events Drag and Drop
 
         private string[] DragDropGetPaths(DragEventArgs e)
         {
@@ -302,7 +307,7 @@ namespace BspZipGUI
                         foreach (var path in droppedFilePaths)
                         {
                             // Get the first BSP dragged if multiple files are dragged
-                            if (FilesUtils.IsExtension(path, FilesUtils.ExtensionBsp))
+                            if (FilesUtils.IsExtension(path, Constants.ExtensionBsp))
                             {
                                 filePath = path;
                                 break;
@@ -313,13 +318,13 @@ namespace BspZipGUI
                         foreach (var path in droppedFilePaths)
                         {
                             // Get the first bspzip.exe dragged if multiple files are dragged
-                            if (FilesUtils.IsFileName(path, FilesUtils.BspZipFile))
+                            if (FilesUtils.IsFileName(path, Constants.BspZipFile))
                             {
                                 filePath = path;
                                 break;
                             }
                             // Otherwise we get any exe file that was dragged
-                            if (FilesUtils.IsExtension(path, FilesUtils.ExtensionExe))
+                            if (FilesUtils.IsExtension(path, Constants.ExtensionExe))
                             {
                                 filePath = path;
                             }
@@ -330,13 +335,13 @@ namespace BspZipGUI
                         foreach (var path in droppedFilePaths)
                         {
                             // Get the first gameinfo.txt dragged if multiple files are dragged
-                            if (FilesUtils.IsFileName(path, FilesUtils.GameinfoFile))
+                            if (FilesUtils.IsFileName(path, Constants.GameinfoFile))
                             {
                                 filePath = path;
                                 break;
                             }
                             // Otherwise we get any txt file that was dragged
-                            if (FilesUtils.IsExtension(path, FilesUtils.ExtensionTxt))
+                            if (FilesUtils.IsExtension(path, Constants.ExtensionTxt))
                             {
                                 filePath = path;
                             }
@@ -376,9 +381,40 @@ namespace BspZipGUI
             e.Effects = DragDropEffects.Move;
         }
 
-        //--------------------------------------
-        //---------- Events PackBsp ------------
-        //--------------------------------------
+        #endregion
+
+        #region Events Generic GUI
+
+        private void LockNonLogTabs()
+        {
+            BspPackerTab.IsEnabled = false;
+            BspRepackTab.IsEnabled = false;
+            SettingsTab.IsEnabled = false;
+        }
+
+        private void UnlockNonLogTabs()
+        {
+            BspPackerTab.IsEnabled = true;
+            BspRepackTab.IsEnabled = true;
+            SettingsTab.IsEnabled = true;
+        }
+        
+        private void GameLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainTabControl.SelectedItem = SettingsTab;
+            SettingsTabControl.SelectedItem = SettingsGamesTab;
+        }
+        
+        private void CustomFolderLinkButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainTabControl.SelectedItem = SettingsTab;
+            SettingsTabControl.SelectedItem = SettingsCustomFoldersTab;
+        }
+
+
+        #endregion
+
+        #region Events PackBsp
 
         /// <summary>
         /// Enable or disable the Pack Bsp button based on which fields are currently valid
@@ -402,33 +438,19 @@ namespace BspZipGUI
         {
             UpdatePackBspGUI();
         }
-
-        private void GameLinkButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainTabControl.SelectedItem = SettingsTab;
-            SettingsTabControl.SelectedItem = SettingsGamesTab;
-        }
-
+        
         private void CustomFolderComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdatePackBspGUI();
-            var selected = CustomFolderComboBox.SelectedItem;
             // Set the datacontext of the folder path textbox to the current selection (or null)    
-            CustomFolderPath.DataContext = selected;
+            CustomFolderPath.DataContext = CustomFolderComboBox.SelectedItem;
         }
-
-        private void CustomFolderLinkButton_Click(object sender, RoutedEventArgs e)
-        {
-            MainTabControl.SelectedItem = SettingsTab;
-            SettingsTabControl.SelectedItem = SettingsCustomFoldersTab;
-        }
-
+        
         private void BspFileTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             UpdatePackBspGUI();
         }
-
-
+        
         private void BspFileTextBox_Drop(object sender, DragEventArgs e)
         {
             string fileName = DragDropGetPath(e, DragDropMode.Bsp);
@@ -446,13 +468,11 @@ namespace BspZipGUI
                 BspFileTextBox.Text = fileName;
             }
         }
-
-
-
+        
         private void PackBspButton_Click(object sender, RoutedEventArgs e)
         {
             GameConfig game = GameComboBox.SelectedItem != null ? (GameConfig)GameComboBox.SelectedItem : null;
-            MapConfig map = CustomFolderComboBox.SelectedItem != null ? (MapConfig)CustomFolderComboBox.SelectedItem : null;
+            MapConfig mapContent = CustomFolderComboBox.SelectedItem != null ? (MapConfig)CustomFolderComboBox.SelectedItem : null;
             string bspPath = BspFileTextBox.Text;
             bool restrictions = (bool)WhitelistCheckbox.IsChecked;
 
@@ -460,19 +480,19 @@ namespace BspZipGUI
             {
                 if (game.FilesExist())
                 {
-                    if (map != null)
+                    if (mapContent != null)
                     {
-                        if (map.DirectoryExists())
+                        if (mapContent.DirectoryExists())
                         {
                             if (System.IO.File.Exists(bspPath))
                             {
-                                if (FilesUtils.IsExtension(bspPath, FilesUtils.ExtensionBsp))
+                                if (FilesUtils.IsExtension(bspPath, Constants.ExtensionBsp))
                                 {
                                     bool continueProcess = true;
                                     if (!restrictions)
                                     {
-                                        string message = string.Format("You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory and subdirectories.\nAre you really sure ?\n(Be careful not to use a path like C:\\)", map.Path);
-                                        MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                        MessageBoxResult result = MessageBox.Show(MessageConstants.MessageWarningWhitelist, 
+                                            MessageConstants.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Warning);
                                         switch (result)
                                         {
                                             case MessageBoxResult.Yes:
@@ -486,12 +506,12 @@ namespace BspZipGUI
                                     if (continueProcess)
                                     {
                                         string mapName = System.IO.Path.GetFileName(bspPath);
-                                        string message = string.Format("Pack {0} using {1} ?", mapName, map.Path);
-                                        MessageBoxResult result = MessageBox.Show(message, MessageBoxTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                                        string message = string.Format("Pack {0} using {1} ?", mapName, mapContent.Path);
+                                        MessageBoxResult result = MessageBox.Show(message, MessageConstants.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
                                         switch (result)
                                         {
                                             case MessageBoxResult.Yes:
-                                                ExecutePackBsp(game, map, bspPath, restrictions);
+                                                ExecutePackBsp(game, mapContent, bspPath, restrictions);
                                                 break;
                                             case MessageBoxResult.No:
                                                 break;
@@ -500,78 +520,209 @@ namespace BspZipGUI
                                 }
                                 else
                                 {
-                                    MessageBox.Show("The file is not .bsp", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    MessageBox.Show(MessageConstants.MessageFileNotBsp, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                                 }
                             }
                             else
                             {
-                                MessageBox.Show("The file doesn't exist", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                                MessageBox.Show(MessageConstants.MessageFileNotFound, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                             }
                         }
                         else
                         {
-                            MessageBox.Show("The Custom Folder doesn't exist", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                            MessageBox.Show(MessageConstants.MessageCustomFolderNotFound, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                         }
                     }
                     else
                     {
-                        MessageBox.Show("Invalid Custom Folder selected", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show(MessageConstants.MessageCustomFolderInvalid, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Can't find the specified bspzip.exe and/or gameinfo.txt", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show(MessageConstants.MessageGameNotFound, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             else
             {
-                MessageBox.Show("Invalid Game selected", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show(MessageConstants.MessageGameInvalid, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             
         }
 
-        private async void ExecutePackBsp(GameConfig game, MapConfig map, string bspPath, bool restrictions)
+        private async void ExecutePackBsp(GameConfig game, MapConfig mapContent, string bspPath, bool hasRestrictions)
         {
-            Pack pack = new Pack(ToolSettings, game, map, bspPath, restrictions);
+            Pack pack = new Pack(toolSettings, game, bspPath, mapContent, hasRestrictions);
 
             // Change the current tab and lock all others
             MainTabControl.SelectedItem = LogsTab;
+            LockNonLogTabs();
             PackBspButton.IsEnabled = false;
-            BspPackerTab.IsEnabled = false;
-            SettingsTab.IsEnabled = false;
 
-            sh.Text = "Packing in process...";
+            stringHolderLog.Text = MessageConstants.MessageBspPacking;
 
             Task<bool> task = pack.Start();
             bool success = await task;
 
-            sh.Text = success ? pack.LogsOutput.ToString() : pack.LogsError.ToString();
+            stringHolderLog.Text = pack.GetLogsOutput();
 
             // Unlock the tabs
-            BspPackerTab.IsEnabled = true;
-            SettingsTab.IsEnabled = true;
+            UnlockNonLogTabs();
             UpdatePackBspGUI();
         }
 
-        //-------------------------------------
-        //---------- Settings Events ----------
-        //-------------------------------------
 
-        private void SettingsSaveButton_Click(object sender, RoutedEventArgs e)
+        #endregion
+
+        #region Events RepackBsp
+
+        /// <summary>
+        /// Enable or disable the Repack Bsp button based on which fields are currently valid
+        /// </summary>
+        private void UpdateRepackBspGUI()
         {
-            if (ToolSettings.SaveSettings())
+            bool isGameSelected = RepackGameComboBox.SelectedValue != null;
+            bool isBspSelected = !string.IsNullOrEmpty(RepackBspFileTextBox.Text);
+            if (isGameSelected && isBspSelected)
             {
-                MessageBox.Show("Saved settings to settings.xml", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                RepackCompressBspButton.IsEnabled = true;
+                RepackDecompressBspButton.IsEnabled = true;
             }
             else
             {
-                MessageBox.Show("Error trying to save settings", MessageBoxTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                RepackCompressBspButton.IsEnabled = false;
+                RepackDecompressBspButton.IsEnabled = false;
+            }
+        }
+
+        private void RepackGameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateRepackBspGUI();
+        }
+
+        private void RepackBspFileTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateRepackBspGUI();
+        }
+
+        private void RepackBspFileTextBox_Drop(object sender, DragEventArgs e)
+        {
+            string fileName = DragDropGetPath(e, DragDropMode.Bsp);
+            if (fileName != null)
+            {
+                RepackBspFileTextBox.Text = fileName;
+            }
+        }
+
+        private void RepackBspFileBrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            string fileName = FilesUtils.OpenFileDialog(FileFilters.Bsp);
+            if (fileName != null)
+            {
+                RepackBspFileTextBox.Text = fileName;
             }
         }
         
-        // ******
-        // Games
-        // ******
+        private void RepackCompressBspButton_Click(object sender, RoutedEventArgs e)
+        {
+            RepackCompressDecompressBsp(true);
+        }
+
+        private void RepackDecompressBspButton_Click(object sender, RoutedEventArgs e)
+        {
+            RepackCompressDecompressBsp(false);
+        }
+
+        private void RepackCompressDecompressBsp(bool isCompress)
+        {
+            GameConfig game = RepackGameComboBox.SelectedItem != null ? (GameConfig)RepackGameComboBox.SelectedItem : null;
+            string bspPath = RepackBspFileTextBox.Text;
+            if (game != null)
+            {
+                if (game.FilesExist())
+                {
+                    if (System.IO.File.Exists(bspPath))
+                    {
+                        if (FilesUtils.IsExtension(bspPath, Constants.ExtensionBsp))
+                        {
+                            string mapName = System.IO.Path.GetFileName(bspPath);
+                            string message = isCompress ? string.Format("Compress {0} ?", mapName) : string.Format("Decompress {0} ?", mapName);
+                            MessageBoxResult result = MessageBox.Show(message, MessageConstants.MessageTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                            switch (result)
+                            {
+                                case MessageBoxResult.Yes:
+                                    ExecuteRepackBsp(game, bspPath, isCompress);
+                                    break;
+                                case MessageBoxResult.No:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show(MessageConstants.MessageFileNotBsp, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show(MessageConstants.MessageFileNotFound, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(MessageConstants.MessageGameNotFound, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show(MessageConstants.MessageGameInvalid, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+        }
+
+        private async void ExecuteRepackBsp(GameConfig game, string bspPath, bool isCompress)
+        {
+            Repack repack = new Repack(toolSettings, game, bspPath, isCompress);
+
+            // Change the current tab and lock all others
+            MainTabControl.SelectedItem = LogsTab;
+            LockNonLogTabs();
+            RepackCompressBspButton.IsEnabled = false;
+            RepackDecompressBspButton.IsEnabled = false;
+
+            stringHolderLog.Text = isCompress ? MessageConstants.MessageBspRepackCompress : MessageConstants.MessageBspRepackDecompress;
+            
+            Task<bool> task = repack.Start();
+            bool success = await task;
+
+            stringHolderLog.Text = repack.GetLogsOutput();
+
+            // Unlock the tabs
+            UnlockNonLogTabs();
+            UpdateRepackBspGUI();
+        }
+
+
+        #endregion
+
+        #region Events Settings
+
+        #region Events Settings - Save
+
+        private void SettingsSaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (toolSettings.SaveSettings())
+            {
+                MessageBox.Show(MessageConstants.MessageSaveSettingsOK, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                MessageBox.Show(MessageConstants.MessageSaveSettingsFail, MessageConstants.MessageTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        #endregion
+
+        #region Events Settings - Games
 
         private void SettingsGameComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -628,9 +779,9 @@ namespace BspZipGUI
         
         private void SettingsGameAddButton_Click(object sender, RoutedEventArgs e)
         {
-            bool wasEmpty = ToolSettings.GamesConfigs.Count == 0;
+            bool wasEmpty = toolSettings.GamesConfigs.Count == 0;
             GameConfig game = GameConfig.GetDefaultGameConfig();
-            ToolSettings.GamesConfigs.Add(game);
+            toolSettings.GamesConfigs.Add(game);
             SettingsGameComboBox.SelectedItem = game;
             if (wasEmpty)
             {
@@ -646,21 +797,20 @@ namespace BspZipGUI
             if (selected != null)
             {
                 var game = (GameConfig)selected;
-                ToolSettings.GamesConfigs.Remove(game);
+                toolSettings.GamesConfigs.Remove(game);
                 GamesForceSelect();
             }
         }
 
+        #endregion
 
-        // ***************
-        // Custom Folders
-        // ***************
-        
+        #region Events Settings - Custom Folders
+
         private void SettingsCustomFolderAddButton_Click(object sender, RoutedEventArgs e)
         {
-            bool wasEmpty = ToolSettings.MapsConfigs.Count == 0;
+            bool wasEmpty = toolSettings.MapsConfigs.Count == 0;
             MapConfig map = MapConfig.GetDefaultMapConfig();
-            ToolSettings.MapsConfigs.Add(map);
+            toolSettings.MapsConfigs.Add(map);
             SettingsCustomFolderComboBox.SelectedItem = map;
             if (wasEmpty)
             {
@@ -706,14 +856,14 @@ namespace BspZipGUI
             if (selected != null)
             {
                 var map = (MapConfig)selected;
-                ToolSettings.MapsConfigs.Remove(map);
+                toolSettings.MapsConfigs.Remove(map);
                 CustomFoldersForceSelect();
             }
         }
 
-        // **********
-        // Whitelist
-        // **********
+        #endregion
+
+        #region Events Settings - Whitelist
 
         private void SettingsWhitelistComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -725,7 +875,7 @@ namespace BspZipGUI
         private void SettingsWhitelistAddButton_Click(object sender, RoutedEventArgs e)
         {
             DirectoryRestrictions restrictions = DirectoryRestrictions.GetDefaultDirectoryRestrictions();
-            ToolSettings.DirectoriesRestrictions.Add(restrictions);
+            toolSettings.DirectoriesRestrictions.Add(restrictions);
             SettingsWhitelistComboBox.SelectedItem = restrictions;
             DirectoryRestrictionsListUpdateGUI();
         }
@@ -736,12 +886,14 @@ namespace BspZipGUI
             if (selected != null)
             {
                 var restrictions = (DirectoryRestrictions)selected;
-                ToolSettings.DirectoriesRestrictions.Remove(restrictions);
+                toolSettings.DirectoriesRestrictions.Remove(restrictions);
                 DirectoryRestrictionsForceSelect();
             }
         }
 
-        
+        #endregion
+
+        #endregion
 
     }
 

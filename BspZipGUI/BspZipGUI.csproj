@@ -59,9 +59,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\StringHolder.cs" />
+    <Compile Include="Tool\Bspzip.cs" />
     <Compile Include="Tool\FilePack.cs" />
     <Compile Include="Tool\Pack.cs" />
+    <Compile Include="Tool\Repack.cs" />
     <Compile Include="Tool\Settings.cs" />
+    <Compile Include="Tool\Utils\Constants.cs" />
     <Compile Include="Tool\Utils\FilesUtils.cs" />
     <Compile Include="Tool\Utils\XmlUtils.cs" />
     <Page Include="MainWindow.xaml">

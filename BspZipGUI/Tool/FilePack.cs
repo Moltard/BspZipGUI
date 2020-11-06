@@ -10,33 +10,41 @@ namespace BspZipGUI.Tool
     class FilePack
     {
 
+        #region Attributes
+
         /// <summary>
         /// The list of files to pack: &lt;internalPath, externalPath&gt;
         /// </summary>
-        private IDictionary<string, string> FilesList { get; }
+        private readonly IDictionary<string, string> filesList;
 
         /// <summary>
         /// The path to the custom directory (no ending '/')
         /// </summary>
-        private string CustomDirectory { get; }
+        private readonly string customDirectory;
 
         /// <summary>
         /// The length of custom directory path + 1
         /// </summary>
-        private int CustomDirectoryLength { get; }
+        private readonly int customDirectoryLength;
 
+        #endregion
+
+        #region Constructor
 
         public FilePack(string customDirectory)
         {
-            CustomDirectory = customDirectory;
-            CustomDirectoryLength = customDirectory.Length + 1;
-            FilesList = new Dictionary<string, string>();
+            this.customDirectory = customDirectory;
+            customDirectoryLength = customDirectory.Length + 1;
+            filesList = new Dictionary<string, string>();
         }
 
+        #endregion
+
+        #region Methods - Find Files
+        
         /// <summary>
-        /// Find all the files to pack and store them in the <see cref="FilesList"/>
+        /// Find all the files to pack and store them in the <see cref="filesList"/>
         /// </summary>
-        /// <param name="directory"></param>
         /// <param name="hasRestrictions"></param>
         /// <param name="directoriesRestrictions"></param>
         public void FindAllFiles(bool hasRestrictions, ICollection<DirectoryRestrictions> directoriesRestrictions)
@@ -52,7 +60,7 @@ namespace BspZipGUI.Tool
             else
             {
                 // Add every single file in the subfolders
-                var filesList = FilesUtils.GetFilesList(CustomDirectory);
+                var filesList = FilesUtils.GetFilesList(customDirectory);
                 if (filesList != null)
                 {
                     foreach (string path in filesList)
@@ -64,13 +72,13 @@ namespace BspZipGUI.Tool
         }
         
         /// <summary>
-        /// Find all the files matching the extensions restrictions and store them in the <see cref="FilesList"/>
+        /// Find all the files matching the extensions restrictions and store them in the <see cref="filesList"/>
         /// </summary>
         /// <param name="directory"></param>
         /// <param name="directoryRestrictions"></param>
         private void GetAllFilesSubDirectory(DirectoryRestrictions directoryRestrictions)
         {
-            string subDirectory = System.IO.Path.Combine(CustomDirectory, directoryRestrictions.DirectoryName);
+            string subDirectory = System.IO.Path.Combine(customDirectory, directoryRestrictions.DirectoryName);
             string[] extensions = directoryRestrictions.AllowedExtension.ToArray();
             if (System.IO.Directory.Exists(subDirectory))
             {
@@ -89,13 +97,13 @@ namespace BspZipGUI.Tool
         }
 
         /// <summary>
-        /// Append the given path to <see cref="FilesList"/> 
+        /// Append the given path to <see cref="filesList"/> 
         /// </summary>
         /// <param name="externalPath"></param>
         private void AppendPath(string externalPath)
         {
             string internalPath = GetInternalPath(externalPath);
-            FilesList.Add(new KeyValuePair<string, string>(internalPath, externalPath));
+            filesList.Add(new KeyValuePair<string, string>(internalPath, externalPath));
         }
 
         /// <summary>
@@ -105,9 +113,13 @@ namespace BspZipGUI.Tool
         /// <returns></returns>
         private string GetInternalPath(string externalPath)
         {
-            return externalPath.Substring(CustomDirectoryLength).
-                Replace(FilesUtils.antislash, FilesUtils.slash);
+            return externalPath.Substring(customDirectoryLength).
+                Replace(Constants.Backslash, Constants.Slash);
         }
+
+        #endregion
+
+        #region Methods - Write List
 
         /// <summary>
         /// Create filesList.txt with the paths of each files to pack
@@ -115,7 +127,7 @@ namespace BspZipGUI.Tool
         public bool OutputToFile()
         {
             var outputLines = new List<string>();
-            foreach (KeyValuePair<string, string> entry in FilesList)
+            foreach (KeyValuePair<string, string> entry in filesList)
             {
                 outputLines.Add(entry.Key);
                 outputLines.Add(entry.Value);
@@ -123,11 +135,11 @@ namespace BspZipGUI.Tool
 
             try
             {
-                if (System.IO.File.Exists(Pack.filesListText))
+                if (System.IO.File.Exists(Constants.FilesListText))
                 {
-                    System.IO.File.Delete(Pack.filesListText);
+                    System.IO.File.Delete(Constants.FilesListText);
                 }
-                System.IO.File.WriteAllLines(Pack.filesListText, outputLines);
+                System.IO.File.WriteAllLines(Constants.FilesListText, outputLines);
 
             }
             catch
@@ -136,6 +148,8 @@ namespace BspZipGUI.Tool
             }
             return true;
         }
-        
+
+        #endregion
+
     }
 }

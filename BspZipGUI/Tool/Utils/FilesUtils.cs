@@ -18,20 +18,18 @@ namespace BspZipGUI.Tool.Utils
 
     static class FilesUtils
     {
+        #region Constants
+
         private const string FilterText = "Text Files (*.txt) | *.txt";
         private const string FilterGameinfoTxt = "Gameinfo (gameinfo.txt)|gameinfo.txt|Text files (*.txt)|*.txt|All files (*.*)|*.*";
         private const string FilterBsp = "BSP Files (*.bsp)| *.bsp";
         private const string FilterBspZipExe = "BspZip (bspzip.exe)| bspzip.exe|Executable files (*.exe)|*.exe";
         private const string FolderSelection = "[Folder Selection]";
+        private const string SearchPattern = "*.*";
 
-        public const string ExtensionBsp = ".bsp";
-        public const string ExtensionExe = ".exe";
-        public const string ExtensionTxt = ".txt";
-        public const string BspZipFile = "bspzip.exe";
-        public const string GameinfoFile = "gameinfo.txt";
-        private const string searchPattern = "*.*";
-        public const char slash = '/';
-        public const char antislash = '\\';
+        #endregion
+
+        #region Methods - Files / Folders
 
         /// <summary>
         /// Read contents of an embedded resource file
@@ -61,8 +59,7 @@ namespace BspZipGUI.Tool.Utils
             }
             catch { }
         }
-
-
+        
         /// <summary>
         /// Remove any extra '/' in the directory path and '/' becomes '\'
         /// </summary>
@@ -89,7 +86,7 @@ namespace BspZipGUI.Tool.Utils
             {
                 try
                 {
-                    var files = System.IO.Directory.GetFiles(directory, searchPattern, System.IO.SearchOption.AllDirectories);
+                    var files = System.IO.Directory.GetFiles(directory, SearchPattern, System.IO.SearchOption.AllDirectories);
                     return new List<string>(files);
                 } 
                 catch { }
@@ -186,6 +183,10 @@ namespace BspZipGUI.Tool.Utils
             return string.Empty;
         }
 
+        #endregion
+
+        #region Methods - Dialog File / Folder 
+
         /// <summary>
         /// Open the File Browser Dialog and return the path of the selected file, null if none
         /// </summary>
@@ -226,6 +227,7 @@ namespace BspZipGUI.Tool.Utils
             return null;
         }
 
+        #endregion
 
     }
 }

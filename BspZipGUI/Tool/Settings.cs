@@ -9,7 +9,9 @@ using System.Xml.Serialization;
 
 namespace BspZipGUI.Tool
 {
-    
+
+    #region Class - Settings
+
     /// <summary>
     /// Store all settings of the user
     /// </summary>
@@ -18,9 +20,7 @@ namespace BspZipGUI.Tool
     public class Settings
     {
         
-        public Settings()
-        {
-        }
+        #region Attributes
 
         /// <summary>
         /// Last BSP loaded in the tool
@@ -48,7 +48,6 @@ namespace BspZipGUI.Tool
         //public List<GameConfig> GamesConfigs { get; set; }
         public ObservableCollection<GameConfig> GamesConfigs { get; set; }
 
-
         /// <summary>
         /// List of maps configs (custom file directory)
         /// </summary>
@@ -63,39 +62,17 @@ namespace BspZipGUI.Tool
         [XmlArrayItem(ElementName = "Directory")]
         public ObservableCollection<DirectoryRestrictions> DirectoriesRestrictions { get; set; }
 
-        /// <summary>
-        /// Find the MapConfig (custom files location) corresponding to the given name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>Return the corresponding MapConfig. null if none found</returns>
-        public MapConfig FindMapConfig(string name)
+        #endregion
+
+        #region Constructor
+
+        public Settings()
         {
-            foreach (var mapConfig in MapsConfigs)
-            {
-                if (name.Equals(mapConfig.Name))
-                {
-                    return mapConfig;
-                }
-            }
-            return null;
         }
 
-        /// <summary>
-        /// Find the GameConfig (bspzip.exe location) corresponding to the given name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>Return the corresponding GameConfig. null if none found</returns>
-        public GameConfig FindGameConfig(string name)
-        {
-            foreach (var gameConfig in GamesConfigs)
-            {
-                if (name.Equals(gameConfig.Name))
-                {
-                    return gameConfig;
-                }
-            }
-            return null;
-        }
+        #endregion
+
+        #region Methods - Init Attributes
 
         /// <summary>
         /// Init the attributes that werent init by the xml (cause of missing parameters). And delete invalid ones
@@ -160,7 +137,6 @@ namespace BspZipGUI.Tool
             {
                 LastGame = "";
             }
-
         }
 
         private void InitGamesConfigs()
@@ -176,6 +152,47 @@ namespace BspZipGUI.Tool
             DirectoriesRestrictions = new ObservableCollection<DirectoryRestrictions>();
         }
 
+        #endregion
+
+        #region Methods - Find Configs
+
+        /// <summary>
+        /// Find the MapConfig (custom files location) corresponding to the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Return the corresponding MapConfig. null if none found</returns>
+        public MapConfig FindMapConfig(string name)
+        {
+            foreach (var mapConfig in MapsConfigs)
+            {
+                if (name.Equals(mapConfig.Name))
+                {
+                    return mapConfig;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Find the GameConfig (bspzip.exe location) corresponding to the given name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Return the corresponding GameConfig. null if none found</returns>
+        public GameConfig FindGameConfig(string name)
+        {
+            foreach (var gameConfig in GamesConfigs)
+            {
+                if (name.Equals(gameConfig.Name))
+                {
+                    return gameConfig;
+                }
+            }
+            return null;
+        }
+
+        #endregion
+
+        #region Method - Save Settings
 
         /// <summary>
         /// Save the current setting to settings.xml
@@ -185,8 +202,13 @@ namespace BspZipGUI.Tool
             return Utils.XmlUtils.SerializeSettings(this);
         }
 
+        #endregion
 
     }
+
+    #endregion
+
+    #region Class - GameConfig
 
     /// <summary>
     /// Store a game name and the path to its bspzip.exe
@@ -194,28 +216,12 @@ namespace BspZipGUI.Tool
     [Serializable]
     public class GameConfig : INotifyPropertyChanged
     {
-        public GameConfig()
-        {
-        }
 
-        /// <summary>
-        /// Create a default GameConfig
-        /// </summary>
-        /// <returns></returns>
-        public static GameConfig GetDefaultGameConfig()
-        {
-            return new GameConfig
-            {
-                Name = "New Game",
-                BspZip = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\bin\bspzip.exe",
-                GameInfo = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gameinfo.txt"
-            };
-        }
+        #region Attributes
 
         private string name;
         private string bspZip;
         private string gameInfo;
-
 
         /// <summary>
         /// Name of the game
@@ -264,7 +270,33 @@ namespace BspZipGUI.Tool
                 }
             }
         }
-        
+
+        #endregion
+
+        #region Constructor
+
+        public GameConfig()
+        {
+        }
+
+        /// <summary>
+        /// Create a default GameConfig
+        /// </summary>
+        /// <returns></returns>
+        public static GameConfig GetDefaultGameConfig()
+        {
+            return new GameConfig
+            {
+                Name = "New Game",
+                BspZip = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\bin\bspzip.exe",
+                GameInfo = @"C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gameinfo.txt"
+            };
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Path to the folder of gameinfo.txt
         /// </summary>
@@ -296,6 +328,9 @@ namespace BspZipGUI.Tool
             return false;
         }
 
+        #endregion
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -303,7 +338,14 @@ namespace BspZipGUI.Tool
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        #endregion
+
     }
+
+    #endregion
+
+    #region Class - MapConfig
 
     /// <summary>
     /// Store a map name and the path to its custom folder
@@ -311,22 +353,8 @@ namespace BspZipGUI.Tool
     [Serializable]
     public class MapConfig : INotifyPropertyChanged
     {
-        public MapConfig()
-        {
-        }
 
-        /// <summary>
-        /// Create a default MapConfig
-        /// </summary>
-        /// <returns></returns>
-        public static MapConfig GetDefaultMapConfig()
-        {
-            return new MapConfig
-            {
-                Name = "New Custom Folder",
-                Path = @"C:/MyMappingProject/CurrentProject/"
-            };
-        }
+        #region Attributes
 
         private string name;
         private string path;
@@ -363,13 +391,37 @@ namespace BspZipGUI.Tool
             }
         }
 
+        #endregion
+
+        #region Constructor
+
+        public MapConfig()
+        {
+        }
+
+        /// <summary>
+        /// Create a default MapConfig
+        /// </summary>
+        /// <returns></returns>
+        public static MapConfig GetDefaultMapConfig()
+        {
+            return new MapConfig
+            {
+                Name = "New Custom Folder",
+                Path = @"C:/MyMappingProject/CurrentProject/"
+            };
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Clean the path of the directory by removing extra '/' within the path
         /// </summary>
         public void CleanPath()
         {
-            Path = Utils.FilesUtils.GetDirectoryName(Path + Utils.FilesUtils.slash);
+            Path = Utils.FilesUtils.GetDirectoryName(Path + Utils.Constants.Slash);
         }
 
         /// <summary>
@@ -398,13 +450,24 @@ namespace BspZipGUI.Tool
             return false;
         }
 
+        #endregion
+
+        #region INotifyPropertyChanged
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void NotifyPropertyChanged(string propName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        #endregion
+
     }
+
+    #endregion
+
+    #region Class - DirectoryRestrictions
 
     /// <summary>
     /// Store a directory name and the list of allowed files
@@ -413,22 +476,7 @@ namespace BspZipGUI.Tool
     public class DirectoryRestrictions : INotifyPropertyChanged
     {
 
-        public DirectoryRestrictions()
-        {
-        }
-
-        /// <summary>
-        /// Create a default DirectoryRestrictions
-        /// </summary>
-        /// <returns></returns>
-        public static DirectoryRestrictions GetDefaultDirectoryRestrictions()
-        {
-            return new DirectoryRestrictions
-            {
-                DirectoryName = "directory_name",
-                AllowedExtension = new List<string>() { ".txt", ".jpg" }
-            };
-        }
+        #region Attributes
 
         private string directoryName;
 
@@ -474,6 +522,31 @@ namespace BspZipGUI.Tool
             }
         }
 
+        #endregion
+
+        #region Constructor
+
+        public DirectoryRestrictions()
+        {
+        }
+
+        /// <summary>
+        /// Create a default DirectoryRestrictions
+        /// </summary>
+        /// <returns></returns>
+        public static DirectoryRestrictions GetDefaultDirectoryRestrictions()
+        {
+            return new DirectoryRestrictions
+            {
+                DirectoryName = "directory_name",
+                AllowedExtension = new List<string>() { ".txt", ".jpg" }
+            };
+        }
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Return true if all values of the DirectoryRestrictions are not null, false otherwise
         /// </summary>
@@ -487,6 +560,9 @@ namespace BspZipGUI.Tool
             return false;
         }
 
+        #endregion
+
+        #region INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -494,6 +570,11 @@ namespace BspZipGUI.Tool
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+        #endregion
+
     }
+
+    #endregion
 
 }
