@@ -3,6 +3,8 @@ A clean GUI tool that use Valve's BSPZIP command line utility. It is used to emb
 
 <img src="Images/ExampleCustomFolder.jpg" width="60%" />
 
+You can also repack a map to compress (or decompress it).
+
 It can be used for any Source Engine game that provide a bspzip.exe.
 
 This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/BspZipGui) .
@@ -11,7 +13,7 @@ This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/
 
 [BspZipGUI v1.0](https://github.com/Moltard/BspZipGUI/releases/latest)
 
-## How to use
+## How to use - Bsp Packer
 
 Select a game you defined (3 are setup per default), a custom folder you defined and load a BSP.
 
@@ -22,6 +24,16 @@ Check 'Use Directory Whitelist' (recommended) to only pack files from whiteliste
 Press Pack Bsp.
 
 <img src="Images/LogsEnd.jpg" width="60%" />
+
+## How to use - Bsp Repack
+
+Select a game you defined (3 are setup per default) and load a BSP.
+
+<img src="Images/RepackMenu.jpg" width="60%" />
+
+Press Compress Bsp or Decompress Bsp.
+
+<img src="Images/RepackLogs.jpg" width="60%" />
 
 ## How to setup
 
