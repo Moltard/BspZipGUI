@@ -10,70 +10,74 @@
         MinHeight="500" MinWidth="800">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="BG_Color" Color="LightGray" />
-        <Thickness x:Key="MarginSeparator" Left="0" Top="2" Right="0" Bottom="2"/>
-        <Thickness x:Key="MarginNewElements" Left="0" Top="10" Right="0" Bottom="10"/>
-        <Thickness x:Key="MarginNewElements2" Left="0" Top="5" Right="0" Bottom="10"/>
-        <Thickness x:Key="MarginDefault" Left="10" Top="5" Right="10" Bottom="5"/>
-        <Thickness x:Key="PaddingDefault" Left="5" Top="5" Right="5" Bottom="5"/>
-        <Thickness x:Key="PaddingDefault2" Left="10" Top="5" Right="10" Bottom="5"/>
-        <sys:Double x:Key="HeightDefault">30</sys:Double>
 
-        <Style TargetType="TextBlock" x:Key="PageTitle">
-            <Setter Property="Margin" Value="5 10 5 10"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="FontSize" Value="18"/>
-        </Style>
-        
-        <Style TargetType="TextBlock" x:Key="PageDescription">
-            <Setter Property="Margin" Value="10 0 10 0"/>
-            <Setter Property="FontWeight" Value="Light"/>
-            <Setter Property="FontStyle" Value="Italic"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-        
+        <!--#region Strings-->
 
-        <Style TargetType="TextBlock" x:Key="ToolOptionLabel">
-            <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault}"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
+        <!--#region Strings - Titles-->
 
-        <Style TargetType="ComboBox" x:Key="ToolOptionComboBox">
-            <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault}"/>
-            <Setter Property="Height" Value="{StaticResource HeightDefault}"/>
-        </Style>
-        <Style TargetType="TextBox" x:Key="ToolOptionTextBox">
-            <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault}"/>
-            <Setter Property="Height" Value="{StaticResource HeightDefault}"/>
-        </Style>
+        <sys:String x:Key="TextTitleBspPacker">Bsp Packer</sys:String>
+        <sys:String x:Key="TextTitleBspRepack">Bsp Repack</sys:String>
+        <sys:String x:Key="TextTitleLogs">Logs</sys:String>
+        <sys:String x:Key="TextTitleSettings">Settings</sys:String>
 
-        <Style TargetType="Button" x:Key="ToolOptionButton">
-            <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault}"/>
-        </Style>
+        <!--#endregion-->
 
-        <Style TargetType="TextBlock" x:Key="ToolOptionButtonLabel">
-            <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="TextAlignment" Value="Center"/>
-        </Style>
+        <!--#region Strings - Generic-->
 
-        <Style TargetType="Button" x:Key="ToolPackButton">
-            <Setter Property="Margin" Value="{StaticResource MarginDefault}"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault2}"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
+        <sys:String x:Key="TextLabelBrowseButton">Browse</sys:String>
+        <sys:String x:Key="TextLabelGame">Game</sys:String>
+        <sys:String x:Key="TextLabelCustomFolder">Custom Folder</sys:String>
+        <sys:String x:Key="TextLabelBspFile">Bsp File</sys:String>
 
-        <Style TargetType="TextBox" x:Key="ToolLogsTextBox">
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Padding" Value="{StaticResource PaddingDefault}"/>
-            <Setter Property="Height" Value="350"/>
-        </Style>
+        <!--#endregion-->
+
+        <!--#region Strings - Bsp Packer-->
+
+        <sys:String x:Key="TextLabelButtonPackBsp">Pack Bsp</sys:String>
+        <sys:String x:Key="TextLabelUseDirWhitelist">Use Directory Whitelist</sys:String>
+        <sys:String x:Key="TextTooltipUseDirWhitelist">Only pack defined folders and files (Settings)</sys:String>
+
+        <!--#endregion-->
+
+        <!--#region Strings - Bsp Repack-->
+
+        <TextBlock x:Key="TextBlockDescriptionBspRepack" Style="{StaticResource PageDescription}">
+                            Repack the BSP to compress it (or decompress it)<LineBreak/>
+                            Compressing may take several seconds depending of the size of the BSP<LineBreak/>
+                            Not available for every game (e.g. CS:GO)
+        </TextBlock>
+
+        <sys:String x:Key="TextLabelButtonCompress">Compress Bsp</sys:String>
+        <sys:String x:Key="TextLabelButtonDecompress">Decompress Bsp</sys:String>
+
+        <!--#endregion-->
+
+        <!--#region Strings - Settings-->
+
+        <sys:String x:Key="TextHeaderDirWhitelist">Directories Whitelist</sys:String>
+        <sys:String x:Key="TextHeaderCustomFolders">Custom Folders</sys:String>
+        <sys:String x:Key="TextHeaderGames">Games</sys:String>
+
+        <sys:String x:Key="TextLabelName">Name</sys:String>
+        <sys:String x:Key="TextLabelButtonAdd">Add...</sys:String>
+        <sys:String x:Key="TextLabelButtonDelete">Delete</sys:String>
+        <sys:String x:Key="TextLabelButtonSetupGames">Setup Games</sys:String>
+        <sys:String x:Key="TextLabelButtonSetupCustomFolder">Setup Custom Folders</sys:String>
+        <sys:String x:Key="TextLabelButtonSaveSettings">Save Settings</sys:String>
+
+        <sys:String x:Key="TextLabelGameBspzipPath">Bspzip Path</sys:String>
+        <sys:String x:Key="TextLabelGameGameinfoPath">Gameinfo Path</sys:String>
+
+        <sys:String x:Key="TextLabelDirectoryPath">Directory Path</sys:String>
+        <sys:String x:Key="TextLabelDirectoryName">Directory Name</sys:String>
+        <sys:String x:Key="TextLabelAllowedExtensions">Allowed Extensions</sys:String>
+        <sys:String x:Key="TextTooltipAllowedExtensions">Separate extensions by '|'. For example: .vmt|.vtf</sys:String>
+
+        <!--#endregion-->
+
+        <!--#endregion-->
+
+        <!--#region DataTemplate-->
 
         <DataTemplate x:Key="ToolGamesListTemplate">
             <TextBlock Text="{Binding Path=Name}"/>
@@ -84,236 +88,247 @@
         <DataTemplate x:Key="ToolDirectoryWhitelistTemplate">
             <TextBlock Text="{Binding Path=DirectoryName}"/>
         </DataTemplate>
-        
+
+        <!--#endregion-->
+
     </Window.Resources>
-    
-    <Border Padding="5" Background="{StaticResource BG_Color}">
-        <StackPanel>
-            <TabControl Name="MainTabControl" BorderThickness="2" Height="450" Background="{StaticResource BG_Color}">
-                
-                <TabItem Name="BspPackerTab">
-                    <TabItem.Header>
-                        <TextBlock Text="Bsp Packer"/>
-                    </TabItem.Header>
+
+    <Border Style="{StaticResource ToolMainBorderStyle}">
+
+
+        <TabControl Name="MainTabControl" Style="{StaticResource ToolMainTabStyle}">
+
+            <TabItem Name="BspPackerTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleBspPacker}"/>
+                </TabItem.Header>
+
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleBspPacker}"/>
+                        <ContentControl Content="{StaticResource ToolSeparator}"/>
+                    </StackPanel>
 
                     <StackPanel>
-                        <TextBlock Style="{StaticResource PageTitle}">Bsp Packer</TextBlock>
-                        <Separator Margin="{StaticResource MarginSeparator}"/>
-
                         <Grid Margin="{StaticResource MarginNewElements}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Game" />
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
                             <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="GameComboBox" SelectionChanged="GameComboBox_SelectionChanged" 
                                      ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
 
                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="GameLinkButton" Click="GameLinkButton_Click">
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Setup Games"/>
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupGames}"/>
                             </Button>
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Custom Folder" />
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelCustomFolder}" />
                             <StackPanel Grid.Column="1">
-                                <ComboBox Style="{StaticResource ToolOptionComboBox}" Name="CustomFolderComboBox" SelectionChanged="CustomFolderComboBox_SelectionChanged" 
-                                      ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolCustomFoldersListTemplate}" />
-                                <TextBox Name="CustomFolderPath" Opacity="0.4" Style="{StaticResource ToolOptionTextBox}" Text="{Binding Path, Mode=OneWay}" IsReadOnly="True" />
+                                <ComboBox Style="{StaticResource ToolOptionComboBox}" Name="CustomFolderComboBox" 
+                                          SelectionChanged="CustomFolderComboBox_SelectionChanged" 
+                                          ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolCustomFoldersListTemplate}" />
+                                <TextBox Name="CustomFolderPath" Opacity="0.4" Style="{StaticResource ToolOptionTextBox}" 
+                                         Text="{Binding Path, Mode=OneWay}" IsReadOnly="True" />
                             </StackPanel>
-                            
-                            <Button Grid.Column="2" Height="45" Style="{StaticResource ToolOptionButton}" Name="CustomFolderLinkButton" Click="CustomFolderLinkButton_Click">
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Setup Custom Folders"/>
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="CustomFolderLinkButton" Click="CustomFolderLinkButton_Click">
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupCustomFolder}"/>
                             </Button>
                         </Grid>
-                        
+
                         <Grid Margin="{StaticResource MarginNewElements}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Bsp File" />
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="BspFileTextBox" TextChanged="BspFileTextBox_TextChanged"
                                      PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="BspFileTextBox_Drop" />
 
                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="BspFileBrowseButton" Click="BspFileBrowseButton_Click" >
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
                             </Button>
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
-                            <CheckBox Name="WhitelistCheckbox" HorizontalAlignment="Center" IsChecked="True" ToolTip="Only pack defined folders and files (Settings)" >
-                                Use Directory Whitelist
-                            </CheckBox>
+                            <CheckBox Name="WhitelistCheckbox" HorizontalAlignment="Center" IsChecked="True" 
+                                      ToolTip="{StaticResource TextTooltipUseDirWhitelist}" Content="{StaticResource TextLabelUseDirWhitelist}" />
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
-                            <Button Style="{StaticResource ToolPackButton}" Name="PackBspButton" IsEnabled="False" Click="PackBspButton_Click" >
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Pack Bsp"/>
+                            <Button Style="{StaticResource ToolExecuteButton}" Name="PackBspButton" IsEnabled="False" Click="PackBspButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonPackBsp}"/>
                             </Button>
                         </Grid>
-                            
-
                     </StackPanel>
+                </DockPanel>
+            </TabItem>
 
+            <TabItem Name="BspRepackTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleBspRepack}"/>
+                </TabItem.Header>
 
-                </TabItem>
+                <StackPanel>
+                    <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleBspRepack}" />
+                    <ContentControl Content="{StaticResource TextBlockDescriptionBspRepack}"/>
+                    <ContentControl Content="{StaticResource ToolSeparator}"/>
 
-                <TabItem Name="BspRepackTab">
-                    <TabItem.Header>
-                        <TextBlock Text="Bsp Repack"/>
-                    </TabItem.Header>
-
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource PageTitle}">Bsp Repack</TextBlock>
-
-                        <TextBlock Style="{StaticResource PageDescription}">
-                            Repack the BSP to compress it (or decompress it)<LineBreak/>
-                            Compressing may take several seconds depending of the size of the BSP<LineBreak/>
-                            Not available for every game (e.g. CS:GO)
-                        </TextBlock>
-                        <Separator Margin="{StaticResource MarginSeparator}"/>
-
-                        <Grid Margin="{StaticResource MarginNewElements}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Game" />
-                            <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="RepackGameComboBox" SelectionChanged="RepackGameComboBox_SelectionChanged" 
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
+                        <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="RepackGameComboBox" SelectionChanged="RepackGameComboBox_SelectionChanged" 
                                      ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
 
-                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackGameLinkButton" Click="GameLinkButton_Click">
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Setup Games"/>
-                            </Button>
-                        </Grid>
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackGameLinkButton" Click="GameLinkButton_Click">
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupGames}"/>
+                        </Button>
+                    </Grid>
 
-                        <Grid Margin="{StaticResource MarginNewElements}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Bsp File" />
-                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="RepackBspFileTextBox" TextChanged="RepackBspFileTextBox_TextChanged"
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
+                        <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="RepackBspFileTextBox" TextChanged="RepackBspFileTextBox_TextChanged"
                                      PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="RepackBspFileTextBox_Drop" />
 
-                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackBspFileBrowseButton" Click="RepackBspFileBrowseButton_Click" >
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
-                            </Button>
-                        </Grid>
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackBspFileBrowseButton" Click="RepackBspFileBrowseButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                        </Button>
+                    </Grid>
 
-                        <Grid Margin="{StaticResource MarginNewElements}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="1" Style="{StaticResource ToolPackButton}" Name="RepackCompressBspButton" IsEnabled="False" Click="RepackCompressBspButton_Click" >
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Compress Bsp"/>
-                            </Button>
-                            <Button Grid.Column="2" Style="{StaticResource ToolPackButton}" Name="RepackDecompressBspButton" IsEnabled="False" Click="RepackDecompressBspButton_Click" >
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Decompress Bsp"/>
-                            </Button>
-                        </Grid>
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="RepackCompressBspButton" IsEnabled="False" Click="RepackCompressBspButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonCompress}"/>
+                        </Button>
+                        <Button Grid.Column="2" Style="{StaticResource ToolExecuteButton}" Name="RepackDecompressBspButton" IsEnabled="False" Click="RepackDecompressBspButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDecompress}"/>
+                        </Button>
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+
+            <TabItem Name="LogsTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleLogs}"/>
+                </TabItem.Header>
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleLogs}"/>
+                        <ContentControl Content="{StaticResource ToolSeparator}"/>
                     </StackPanel>
-                </TabItem>
 
-                <TabItem Name="LogsTab">
-                    <TabItem.Header>
-                        <TextBlock Text="Logs"/>
-                    </TabItem.Header>
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource PageTitle}">Logs</TextBlock>
-                        <Separator Margin="{StaticResource MarginSeparator}"/>
+                    <Grid Style="{StaticResource ToolLogsGrid}">
+                        <TextBox Style="{StaticResource ToolLogsTextBox}" Name="LogsTextBox" 
+                             Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" Opacity="0.7"
+                             HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
 
-                        <TextBox Opacity="0.7" Style="{StaticResource ToolLogsTextBox}" Name="LogsTextBox" Text="{Binding Text, Mode=OneWay}" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" IsReadOnly="True" />
+                    </Grid>
 
+                </DockPanel>
+            </TabItem>
+
+            <TabItem Name="SettingsTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleSettings}"/>
+                </TabItem.Header>
+
+                <DockPanel>
+
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleSettings}"/>
+                        <ContentControl Content="{StaticResource ToolSeparator}"/>
                     </StackPanel>
-                </TabItem>
-
-                <TabItem Name="SettingsTab">
-                    <TabItem.Header>
-                        <TextBlock Text="Settings"/>
-                    </TabItem.Header>
 
                     <StackPanel>
-                        <TextBlock Style="{StaticResource PageTitle}">Settings</TextBlock>
-                        <Separator Margin="{StaticResource MarginSeparator}"/>
-
-                        <TabControl Name="SettingsTabControl" BorderThickness="2" Background="{StaticResource BG_Color}">
+                        <TabControl Name="SettingsTabControl" Style="{StaticResource ToolMainTabStyle}">
                             <TabItem Name="SettingsGamesTab">
                                 <TabItem.Header>
-                                    <TextBlock Text="Games"/>
+                                    <TextBlock Text="{StaticResource TextHeaderGames}"/>
                                 </TabItem.Header>
                                 <StackPanel>
                                     <Grid Margin="{StaticResource MarginNewElements}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="6*"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" Style="{StaticResource ToolOptionComboBox}" Name="SettingsGameComboBox" 
                                         ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" SelectionChanged="SettingsGameComboBox_SelectionChanged" />
 
                                         <Button Grid.Column="1" Style="{StaticResource ToolOptionButton}" Name="SettingsGameAddButton" Click="SettingsGameAddButton_Click" >
-                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Add..."/>
+                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonAdd}"/>
                                         </Button>
                                     </Grid>
 
                                     <StackPanel Name="SettingsGamesContainer" Visibility="Visible">
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Name" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelName}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsGameName" Text="{Binding Name, Mode=TwoWay}" />
                                         </Grid>
 
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Bspzip path" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGameBspzipPath}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsGameBspzip" Text="{Binding BspZip, Mode=TwoWay}"
                                                      PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="SettingsGameBspzip_Drop"/>
                                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="SettingsGameBspzipBrowseButton" Click="SettingsGameBspzipBrowseButton_Click" >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
                                             </Button>
                                         </Grid>
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Gameinfo path" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGameGameinfoPath}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsGameGameinfo" Text="{Binding GameInfo, Mode=TwoWay}" 
                                                      PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="SettingsGameGameinfo_Drop" />
                                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}"  Name="SettingsGameGameinfoBrowseButton" Click="SettingsGameGameinfoBrowseButton_Click" >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
                                             </Button>
                                         </Grid>
                                         <Grid Margin="{StaticResource MarginNewElements2}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Button Grid.Column="0" Style="{StaticResource ToolOptionButton}" Name="SettingsGameDeleteButton" Click="SettingsGameDeleteButton_Click"  >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Delete"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDelete}"/>
                                             </Button>
                                         </Grid>
                                     </StackPanel>
@@ -323,55 +338,55 @@
                             </TabItem>
                             <TabItem Name="SettingsCustomFoldersTab">
                                 <TabItem.Header>
-                                    <TextBlock Text="Custom Folders"/>
+                                    <TextBlock Text="{StaticResource TextHeaderCustomFolders}"/>
                                 </TabItem.Header>
                                 <StackPanel>
                                     <Grid Margin="{StaticResource MarginNewElements}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="6*"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" Style="{StaticResource ToolOptionComboBox}" Name="SettingsCustomFolderComboBox" 
                                         ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolCustomFoldersListTemplate}" SelectionChanged="SettingsCustomFolderComboBox_SelectionChanged"  />
 
                                         <Button Grid.Column="1" Style="{StaticResource ToolOptionButton}" Name="SettingsCustomFolderAddButton" Click="SettingsCustomFolderAddButton_Click"  >
-                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Add..."/>
+                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonAdd}"/>
                                         </Button>
                                     </Grid>
 
                                     <StackPanel Name="SettingsCustomFolderContainer" Visibility="Visible">
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Name" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelName}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsCustomFolderName" Text="{Binding Name, Mode=TwoWay}" />
                                         </Grid>
 
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Directory path" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelDirectoryPath}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsCustomFolderPath" Text="{Binding Path, Mode=TwoWay}" 
                                                      PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="SettingsCustomFolderPath_Drop" />
                                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="SettingsCustomFolderBrowseButton" Click="SettingsCustomFolderBrowseButton_Click" >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Browse"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
                                             </Button>
                                         </Grid>
 
                                         <Grid Margin="{StaticResource MarginNewElements2}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Button Grid.Column="0" Style="{StaticResource ToolOptionButton}" Name="SettingsCustomFolderDeleteButton" Click="SettingsCustomFolderDeleteButton_Click"  >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Delete"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDelete}"/>
                                             </Button>
                                         </Grid>
                                     </StackPanel>
@@ -381,52 +396,54 @@
                             </TabItem>
                             <TabItem Name="SettingsWhitelistTab">
                                 <TabItem.Header>
-                                    <TextBlock Text="Directories Whitelist"/>
+                                    <TextBlock Text="{StaticResource TextHeaderDirWhitelist}"/>
                                 </TabItem.Header>
                                 <StackPanel>
                                     <Grid Margin="{StaticResource MarginNewElements}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="6*"/>
-                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                         </Grid.ColumnDefinitions>
                                         <ComboBox Grid.Column="0" Style="{StaticResource ToolOptionComboBox}" Name="SettingsWhitelistComboBox" 
-                                     ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolDirectoryWhitelistTemplate}" SelectionChanged="SettingsWhitelistComboBox_SelectionChanged" />
+                                                  ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolDirectoryWhitelistTemplate}" 
+                                                  SelectionChanged="SettingsWhitelistComboBox_SelectionChanged" />
 
                                         <Button Grid.Column="1" Style="{StaticResource ToolOptionButton}" Name="SettingsWhitelistAddButton" Click="SettingsWhitelistAddButton_Click"  >
-                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Add..."/>
+                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonAdd}"/>
                                         </Button>
                                     </Grid>
 
                                     <StackPanel Name="SettingsWhitelistContainer" Visibility="Visible">
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Directory Name" TextWrapping="Wrap" />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabelWrap}" Text="{StaticResource TextLabelDirectoryName}" />
                                             <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsWhitelistDirName" Text="{Binding DirectoryName, Mode=TwoWay}" />
                                         </Grid>
 
                                         <Grid Margin="{StaticResource MarginNewElements}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="5*"/>
-                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="Allowed Extensions" TextWrapping="Wrap" />
-                                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsWhitelistExtensions" Text="{Binding ExtensionStr, Mode=TwoWay}" ToolTip="Separate extensions by '|'. For example: .vmt|.vtf"  />
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabelWrap}" Text="{StaticResource TextLabelAllowedExtensions}" />
+                                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsWhitelistExtensions" 
+                                                     Text="{Binding ExtensionStr, Mode=TwoWay}" ToolTip="{StaticResource TextTooltipAllowedExtensions}" />
 
                                         </Grid>
 
                                         <Grid Margin="{StaticResource MarginNewElements2}">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="6*"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
                                             </Grid.ColumnDefinitions>
 
                                             <Button Grid.Column="0" Style="{StaticResource ToolOptionButton}" Name="SettingsWhitelistDeleteButton" Click="SettingsWhitelistDeleteButton_Click"  >
-                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Delete"/>
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDelete}"/>
                                             </Button>
                                         </Grid>
                                     </StackPanel>
@@ -437,15 +454,16 @@
                         </TabControl>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
-                            <Button Grid.Column="1" Style="{StaticResource ToolPackButton}" Name="SettingsSaveButton" Click="SettingsSaveButton_Click">
-                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="Save Settings"/>
+                            <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="SettingsSaveButton" Click="SettingsSaveButton_Click">
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSaveSettings}"/>
                             </Button>
                         </Grid>
-
                     </StackPanel>
-                </TabItem>
 
-            </TabControl>
-        </StackPanel>
+                </DockPanel>
+            </TabItem>
+
+        </TabControl>
+
     </Border>
 </Window>
