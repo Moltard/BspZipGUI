@@ -1,0 +1,13 @@
+﻿[*.cs]
+
+# IDE0058: La valeur d'expression n'est jamais utilisée
+dotnet_diagnostic.IDE0058.severity = none
+
+# IDE0046: Convertir en expression conditionnelle
+dotnet_diagnostic.IDE0046.severity = none
+
+# IDE0045: Convertir en expression conditionnelle
+dotnet_style_prefer_conditional_expression_over_assignment = false
+
+# IDE0010: Ajouter les instructions case manquantes
+dotnet_diagnostic.IDE0010.severity = none

@@ -16,7 +16,9 @@
         <!--#region Strings - Titles-->
 
         <sys:String x:Key="TextTitleBspPacker">Bsp Packer</sys:String>
-        <sys:String x:Key="TextTitleBspRepack">Bsp Repack</sys:String>
+        <sys:String x:Key="TextTitleRepackBsp">Bsp Repack</sys:String>
+        <sys:String x:Key="TextTitleExtractBsp">Bsp Extract</sys:String>
+        <sys:String x:Key="TextTitleCubemapsBsp">Bsp Cubemaps</sys:String>
         <sys:String x:Key="TextTitleLogs">Logs</sys:String>
         <sys:String x:Key="TextTitleSettings">Settings</sys:String>
 
@@ -33,24 +35,61 @@
 
         <!--#region Strings - Bsp Packer-->
 
+        <sys:String x:Key="TextDescriptionPackBsp">Pack a custom folder into a BSP</sys:String>
+        
         <sys:String x:Key="TextLabelButtonPackBsp">Pack Bsp</sys:String>
+
+        <TextBlock x:Key="TextBlockDescriptionPackBsp" Style="{StaticResource PageDescription}">
+            Pack a custom folder into a BSP
+        </TextBlock>
+        
         <sys:String x:Key="TextLabelUseDirWhitelist">Use Directory Whitelist</sys:String>
         <sys:String x:Key="TextTooltipUseDirWhitelist">Only pack defined folders and files (Settings)</sys:String>
+
+        <sys:String x:Key="TextLabelOverrideBSP">Output to a new Bsp</sys:String>
+        <sys:String x:Key="TextTooltipOverrideBSP">Pack the files into a new Bsp</sys:String>
+        
+        
 
         <!--#endregion-->
 
         <!--#region Strings - Bsp Repack-->
 
-        <TextBlock x:Key="TextBlockDescriptionBspRepack" Style="{StaticResource PageDescription}">
-                            Repack the BSP to compress it (or decompress it)<LineBreak/>
-                            Compressing may take several seconds depending of the size of the BSP<LineBreak/>
-                            Not available for every game (e.g. CS:GO)
+        <TextBlock x:Key="TextBlockDescriptionRepackBsp" Style="{StaticResource PageDescription}">
+            Repack the BSP to compress it (or decompress it)<LineBreak/>
+            Compressing may take several seconds depending of the size of the BSP<LineBreak/>
+            /!\ Warning: Not available for every game (e.g. CS:GO)
         </TextBlock>
 
         <sys:String x:Key="TextLabelButtonCompress">Compress Bsp</sys:String>
         <sys:String x:Key="TextLabelButtonDecompress">Decompress Bsp</sys:String>
 
         <!--#endregion-->
+
+        <!--#region Strings - Bsp Extract-->
+
+        <TextBlock x:Key="TextBlockDescriptionExtractBsp" Style="{StaticResource PageDescription}">
+            Extract the content of the BSP into a directory or into a .zip file<LineBreak/>
+            /!\ Warning: Using it on a repacked BSP will not work
+        </TextBlock>
+
+        <sys:String x:Key="TextLabelButtonExtractBspFolder">Extract to Directory</sys:String>
+        <sys:String x:Key="TextLabelButtonExtractBspZip">Extract to zip</sys:String>
+
+        <!--#endregion-->
+
+        <!--#region Strings - Bsp Cubemaps-->
+
+        <TextBlock x:Key="TextBlockDescriptionCubemapsBsp" Style="{StaticResource PageDescription}">
+            Extract cubemaps of the BSP into a directory or delete all cubemaps<LineBreak/>
+            /!\ Warning: Deleting cubemaps will actually delete every VTF packed in the map
+        </TextBlock>
+
+        <sys:String x:Key="TextLabelButtonCubemapsBspExtract">Extract cubemaps</sys:String>
+        <sys:String x:Key="TextLabelButtonCubemapsBspDelete">Delete cubemaps</sys:String>
+
+        <!--#endregion-->
+
 
         <!--#region Strings - Settings-->
 
@@ -106,6 +145,8 @@
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Top">
                         <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleBspPacker}"/>
+                        <!--<TextBlock Style="{StaticResource PageDescription}" Text="{StaticResource TextDescriptionPackBsp}"/>-->
+                        <ContentControl Content="{StaticResource TextBlockDescriptionPackBsp}"/>
                         <ContentControl Content="{StaticResource ToolSeparator}"/>
                     </StackPanel>
 
@@ -166,6 +207,11 @@
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
+                            <CheckBox Name="OverrideBSPCheckbox" HorizontalAlignment="Center" IsChecked="False" 
+                                      ToolTip="{StaticResource TextTooltipOverrideBSP}" Content="{StaticResource TextLabelOverrideBSP}" />
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
                             <Button Style="{StaticResource ToolExecuteButton}" Name="PackBspButton" IsEnabled="False" Click="PackBspButton_Click" >
                                 <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonPackBsp}"/>
                             </Button>
@@ -174,14 +220,14 @@
                 </DockPanel>
             </TabItem>
 
-            <TabItem Name="BspRepackTab">
+            <TabItem Name="RepackBspTab">
                 <TabItem.Header>
-                    <TextBlock Text="{StaticResource TextTitleBspRepack}"/>
+                    <TextBlock Text="{StaticResource TextTitleRepackBsp}"/>
                 </TabItem.Header>
 
                 <StackPanel>
-                    <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleBspRepack}" />
-                    <ContentControl Content="{StaticResource TextBlockDescriptionBspRepack}"/>
+                    <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleRepackBsp}" />
+                    <ContentControl Content="{StaticResource TextBlockDescriptionRepackBsp}"/>
                     <ContentControl Content="{StaticResource ToolSeparator}"/>
 
                     <Grid Margin="{StaticResource MarginNewElements}">
@@ -221,16 +267,168 @@
                             <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
                             <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
                         </Grid.ColumnDefinitions>
-                        <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="RepackCompressBspButton" IsEnabled="False" Click="RepackCompressBspButton_Click" >
+                        <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="RepackBspCompressButton" IsEnabled="False" Click="RepackBspCompressButton_Click" >
                             <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonCompress}"/>
                         </Button>
-                        <Button Grid.Column="2" Style="{StaticResource ToolExecuteButton}" Name="RepackDecompressBspButton" IsEnabled="False" Click="RepackDecompressBspButton_Click" >
+                        <Button Grid.Column="2" Style="{StaticResource ToolExecuteButton}" Name="RepackBspDecompressButton" IsEnabled="False" Click="RepackBspDecompressButton_Click" >
                             <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDecompress}"/>
                         </Button>
                     </Grid>
 
                 </StackPanel>
             </TabItem>
+
+
+            <TabItem Name="ExtractBspTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleExtractBsp}"/>
+                </TabItem.Header>
+
+                <StackPanel>
+                    <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleExtractBsp}" />
+                    <ContentControl Content="{StaticResource TextBlockDescriptionExtractBsp}"/>
+                    <ContentControl Content="{StaticResource ToolSeparator}"/>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
+                        <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="ExtractBspGameComboBox" SelectionChanged="ExtractBspGameComboBox_SelectionChanged" 
+                                     ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="ExtractBspGameLinkButton" Click="GameLinkButton_Click">
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupGames}"/>
+                        </Button>
+                    </Grid>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
+                        <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="ExtractBspFileTextBox" TextChanged="ExtractBspFileTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="ExtractBspFileTextBox_Drop" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="ExtractBspFileBrowseButton" Click="ExtractBspFileBrowseButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                        </Button>
+                    </Grid>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelDirectoryPath}" />
+                        <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="ExtractBspFolderTextBox" TextChanged="ExtractBspFolderTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="ExtractBspFolderTextBox_Drop" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="ExtractBspFolderBrowseButton" Click="ExtractBspFolderBrowseButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                        </Button>
+                    </Grid>
+
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="ExtractBspDirectoryButton" IsEnabled="False" Click="ExtractBspDirectoryButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonExtractBspFolder}"/>
+                        </Button>
+                        <Button Grid.Column="2" Style="{StaticResource ToolExecuteButton}" Name="ExtractBspZipButton" IsEnabled="False" Click="ExtractBspZipButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonExtractBspZip}"/>
+                        </Button>
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+
+
+            <TabItem Name="CubemapsBspTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleCubemapsBsp}"/>
+                </TabItem.Header>
+
+                <StackPanel>
+                    <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleCubemapsBsp}" />
+                    <ContentControl Content="{StaticResource TextBlockDescriptionCubemapsBsp}"/>
+                    <ContentControl Content="{StaticResource ToolSeparator}"/>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
+                        <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="CubemapsBspGameComboBox" SelectionChanged="CubemapsBspGameComboBox_SelectionChanged" 
+                                     ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="CubemapsBspGameLinkButton" Click="GameLinkButton_Click">
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupGames}"/>
+                        </Button>
+                    </Grid>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
+                        <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="CubemapsBspFileTextBox" TextChanged="CubemapsBspFileTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="CubemapsBspFileTextBox_Drop" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="CubemapsBspFileBrowseButton" Click="CubemapsBspFileBrowseButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                        </Button>
+                    </Grid>
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelDirectoryPath}" />
+                        <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="CubemapsBspFolderTextBox" TextChanged="CubemapsBspFolderTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="CubemapsBspFolderTextBox_Drop" />
+
+                        <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="CubemapsBspFolderBrowseButton" Click="CubemapsBspFolderBrowseButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                        </Button>
+                    </Grid>
+
+
+                    <Grid Margin="{StaticResource MarginNewElements}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                            <ColumnDefinition Style="{StaticResource GridColumnSize2}"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="1" Style="{StaticResource ToolExecuteButton}" Name="CubemapsBspExtractButton" IsEnabled="False" Click="CubemapsBspExtractButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonCubemapsBspExtract}"/>
+                        </Button>
+                        <Button Grid.Column="2" Style="{StaticResource ToolExecuteButton}" Name="CubemapsBspDeleteButton" IsEnabled="False" Click="CubemapsBspDeleteButton_Click" >
+                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonCubemapsBspDelete}"/>
+                        </Button>
+                    </Grid>
+
+                </StackPanel>
+            </TabItem>
+
+
 
             <TabItem Name="LogsTab">
                 <TabItem.Header>
@@ -244,7 +442,7 @@
 
                     <Grid Style="{StaticResource ToolLogsGrid}">
                         <TextBox Style="{StaticResource ToolLogsTextBox}" Name="LogsTextBox" 
-                             Text="{Binding Text, Mode=OneWay}" IsReadOnly="True" Opacity="0.7"
+                             Text="{Binding Logs, Mode=OneWay}" IsReadOnly="True" Opacity="0.7"
                              HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" />
 
                     </Grid>

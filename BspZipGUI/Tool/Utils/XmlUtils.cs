@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BspZipGUI.Tool.Xml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,99 +8,132 @@ using System.Xml.Serialization;
 
 namespace BspZipGUI.Tool.Utils
 {
-    static class XmlUtils
+    internal static class XmlUtils
     {
         #region Constants
 
-        private const string XmlSettings = "settings.xml";
-        private const string XmlSettingsBackup = "BspZipGUI.settings_backup.txt";
+        /// <summary>
+        /// Name of the Settings file
+        /// </summary>
+        private const string xmlSettings = "settings.xml";
+
+        /// <summary>
+        /// Path to the default settings, stored in the App
+        /// </summary>
+        private const string xmlSettingsBackup = "BspZipGUI.settings_backup.txt";
 
         #endregion
 
         #region Methods
+
         /// <summary>
-        /// Get the settings of the application or recreate them if they don't exist
+        /// Get the settings of the application by reading settings.xml
         /// </summary>
-        /// <returns></returns>
-        public static Settings GetSettings()
+        /// <exception cref="SettingsSerializationException">If an error happens during the parsingof the file</exception>
+        /// <returns>The initialized Settings or null if the file doesn't exist</returns>
+        public static ToolSettings GetSettingsFromFile()
         {
-            Settings settings = null;
-            if (System.IO.File.Exists(XmlSettings))
+            if (System.IO.File.Exists(xmlSettings))
             {
                 // If settings.xml exist, we load it
-                settings = DeserializeSettings();
+                return DeserializeSettingsFromFile(xmlSettings);
             }
-            else
-            {
-                // If it doesn't exist, we load it from the embedded ressource and recreate it
-                string xmlText = FilesUtils.ReadResourceFile(XmlSettingsBackup);
-                settings = DeserializeSettings(xmlText);
-                FilesUtils.WriteAllText(XmlSettings, xmlText);
-            }
-            return settings;
+            return null;
         }
 
-        
+
         /// <summary>
-        /// Read and parse settings.xml
+        /// Read and parse the given settings file
         /// </summary>
-        /// <returns>Returns the parsed settings</returns>
-        public static Settings DeserializeSettings()
+        /// <param name="filename">Name of the file to parse</param>
+        /// <exception cref="SettingsSerializationException">If an error happens during the parsing</exception>
+        /// <returns>Parsed settings</returns>
+        private static ToolSettings DeserializeSettingsFromFile(string filename)
         {
-            Settings settings = null;
             try
             {
-                using (var reader = new System.IO.StreamReader(XmlSettings))
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(filename))
                 {
-                    var serializer = new XmlSerializer(typeof(Settings));
-                    settings = (Settings)serializer.Deserialize(reader);
+                    XmlSerializer serializer = new XmlSerializer(typeof(ToolSettings));
+                    return (ToolSettings)serializer.Deserialize(reader);
                 }
             }
-            catch { }
-            return settings;
+            catch (Exception ex)
+            {
+                throw new SettingsSerializationException(MessageConstants.MessageSettingsReadError, ex);
+            }
         }
 
         /// <summary>
-        /// Read and parse the given string of settings.xml
+        /// Get the default settings stored in the .exe
         /// </summary>
-        /// <param name="xmlText"></param>
+        /// <exception cref="SettingsSerializationException">If an error happens when reading and parsing the default settings</exception>
         /// <returns></returns>
-        public static Settings DeserializeSettings(string xmlText)
+        public static ToolSettings GetSettingsFromResource()
         {
-            Settings settings = null;
+            // If it doesn't exist, we load it from the embedded ressource and recreate it
+            string xmlText;
             try
             {
-                using (var reader = new System.IO.StringReader(xmlText))
-                {
-                    var serializer = new XmlSerializer(typeof(Settings));
-                    settings = (Settings)serializer.Deserialize(reader);
-                }
+                xmlText = FileUtils.ReadResourceFile(xmlSettingsBackup);
+                //System.IO.File.WriteAllText(xmlSettings, xmlText);
             }
-            catch { }
-            return settings;
+            catch (Exception ex)
+            {
+                throw new SettingsSerializationException(MessageConstants.MessageSettingsDefaultReadError, ex);
+            }
+            return DeserializeSettingsFromText(xmlText);
         }
 
+
+        /// <summary>
+        /// Read and parse the given string into Settings
+        /// </summary>
+        /// <param name="xmlText">the text to parse</param>
+        /// <exception cref="SettingsSerializationException">If an error happens during the parsing</exception>
+        /// <returns>Parsed settings</returns>
+        private static ToolSettings DeserializeSettingsFromText(string xmlText)
+        {
+            try
+            {
+                using (System.IO.StringReader reader = new System.IO.StringReader(xmlText))
+                {
+                    XmlSerializer serializer = new XmlSerializer(typeof(ToolSettings));
+                    return (ToolSettings)serializer.Deserialize(reader);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SettingsSerializationException(MessageConstants.MessageSettingsDefaultReadError, ex);
+            }
+        }
 
         /// <summary>
         /// Save the given settings in settings.xml
         /// </summary>
-        /// <param name="settings"></param>
-        public static bool SerializeSettings(Settings settings)
+        /// <param name="settings">The settings to save</param>
+        /// <exception cref="SettingsSerializationException">If an error happens during the serialization of the file</exception>
+        /// <returns>true if successful, false if the Settings are null</returns>
+        public static bool SerializeSettings(ToolSettings settings)
         {
             if (settings != null)
             {
-                var xmlWritterSettings = new System.Xml.XmlWriterSettings() { Indent = true };
+                System.Xml.XmlWriterSettings xmlWritterSettings =
+                    new System.Xml.XmlWriterSettings() { Indent = true };
                 try
                 {
-                    using (var writer = new System.IO.StreamWriter(XmlSettings))
-                    using (var xmlWriter = System.Xml.XmlWriter.Create(writer, xmlWritterSettings))
+                    using (System.IO.StreamWriter writer = new System.IO.StreamWriter(xmlSettings))
+                    using (System.Xml.XmlWriter xmlWriter = System.Xml.XmlWriter.Create(writer, xmlWritterSettings))
                     {
-                        var serializer = new XmlSerializer(typeof(Settings));
+                        XmlSerializer serializer = new XmlSerializer(typeof(ToolSettings));
                         serializer.Serialize(xmlWriter, settings);
                     }
                     return true;
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    throw new SettingsSerializationException(MessageConstants.MessageSettingsSaveError, ex);
+                }
             }
             return false;
         }
@@ -107,4 +141,7 @@ namespace BspZipGUI.Tool.Utils
         #endregion
 
     }
+
+
+
 }

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace BspZipGUI.Tool
+namespace BspZipGUI.Tool.Xml
 {
 
     #region Class - Settings
@@ -17,9 +17,9 @@ namespace BspZipGUI.Tool
     /// </summary>
     [Serializable]
     [XmlRoot("AppSettings")]
-    public class Settings
+    public class ToolSettings
     {
-        
+
         #region Attributes
 
         /// <summary>
@@ -41,9 +41,15 @@ namespace BspZipGUI.Tool
         public string LastCustomDirectory { get; set; }
 
         /// <summary>
+        /// Last directory path loaded by the tool for extractions
+        /// </summary>
+        [XmlElement(ElementName = "LastExtractDirectory", Order = 4)]
+        public string LastExtractDirectory { get; set; }
+
+        /// <summary>
         /// List of games configs (bspzip.exe directory)
         /// </summary>
-        [XmlArray(ElementName = "BspZipDirectories", Order = 4)]
+        [XmlArray(ElementName = "BspZipDirectories", Order = 5)]
         [XmlArrayItem(ElementName = "Game")]
         //public List<GameConfig> GamesConfigs { get; set; }
         public ObservableCollection<GameConfig> GamesConfigs { get; set; }
@@ -51,14 +57,14 @@ namespace BspZipGUI.Tool
         /// <summary>
         /// List of maps configs (custom file directory)
         /// </summary>
-        [XmlArray(ElementName = "CustomFilesDirectories", Order = 5)]
+        [XmlArray(ElementName = "CustomFilesDirectories", Order = 6)]
         [XmlArrayItem(ElementName = "Map")]
         public ObservableCollection<MapConfig> MapsConfigs { get; set; }
 
         /// <summary>
         /// List of base directories the tool can browse and the file extensions allowed
         /// </summary>
-        [XmlArray(ElementName = "WhiteListDirectories", Order = 6)]
+        [XmlArray(ElementName = "WhiteListDirectories", Order = 7)]
         [XmlArrayItem(ElementName = "Directory")]
         public ObservableCollection<DirectoryRestrictions> DirectoriesRestrictions { get; set; }
 
@@ -66,7 +72,7 @@ namespace BspZipGUI.Tool
 
         #region Constructor
 
-        public Settings()
+        public ToolSettings()
         {
         }
 
@@ -127,15 +133,19 @@ namespace BspZipGUI.Tool
 
             if (LastBsp == null)
             {
-                LastBsp = "";
+                LastBsp = string.Empty;
             }
             if (LastCustomDirectory == null)
             {
-                LastCustomDirectory = "";
+                LastCustomDirectory = string.Empty;
             }
             if (LastGame == null)
             {
-                LastGame = "";
+                LastGame = string.Empty;
+            }
+            if (LastExtractDirectory == null)
+            {
+                LastExtractDirectory = string.Empty;
             }
         }
 
@@ -163,7 +173,7 @@ namespace BspZipGUI.Tool
         /// <returns>Return the corresponding MapConfig. null if none found</returns>
         public MapConfig FindMapConfig(string name)
         {
-            foreach (var mapConfig in MapsConfigs)
+            foreach (MapConfig mapConfig in MapsConfigs)
             {
                 if (name.Equals(mapConfig.Name))
                 {
@@ -180,7 +190,7 @@ namespace BspZipGUI.Tool
         /// <returns>Return the corresponding GameConfig. null if none found</returns>
         public GameConfig FindGameConfig(string name)
         {
-            foreach (var gameConfig in GamesConfigs)
+            foreach (GameConfig gameConfig in GamesConfigs)
             {
                 if (name.Equals(gameConfig.Name))
                 {
@@ -188,18 +198,6 @@ namespace BspZipGUI.Tool
                 }
             }
             return null;
-        }
-
-        #endregion
-
-        #region Method - Save Settings
-
-        /// <summary>
-        /// Save the current setting to settings.xml
-        /// </summary>
-        public bool SaveSettings()
-        {
-            return Utils.XmlUtils.SerializeSettings(this);
         }
 
         #endregion
@@ -228,7 +226,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (name != value)
@@ -244,7 +242,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public string BspZip
         {
-            get { return bspZip; }
+            get => bspZip;
             set
             {
                 if (bspZip != value)
@@ -260,7 +258,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public string GameInfo
         {
-            get { return gameInfo; }
+            get => gameInfo;
             set
             {
                 if (gameInfo != value)
@@ -300,7 +298,7 @@ namespace BspZipGUI.Tool
         /// <summary>
         /// Path to the folder of gameinfo.txt
         /// </summary>
-        public string GameInfoFolder { get { return System.IO.Path.GetDirectoryName(GameInfo); } }
+        public string GameInfoFolder => System.IO.Path.GetDirectoryName(GameInfo);
 
         /// <summary>
         /// Return true if all values of the GameConfig are not null, false otherwise
@@ -364,7 +362,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (name != value)
@@ -380,7 +378,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public string Path
         {
-            get { return path; }
+            get => path;
             set
             {
                 if (path != value)
@@ -421,7 +419,7 @@ namespace BspZipGUI.Tool
         /// </summary>
         public void CleanPath()
         {
-            Path = Utils.FilesUtils.GetDirectoryName(Path + Utils.Constants.Slash);
+            Path = Utils.FileUtils.TryGetDirectoryName(Path + Utils.Constants.Slash);
         }
 
         /// <summary>
@@ -486,7 +484,7 @@ namespace BspZipGUI.Tool
         [XmlElement(Order = 1)]
         public string DirectoryName
         {
-            get { return directoryName; }
+            get => directoryName;
             set
             {
                 if (directoryName != value)

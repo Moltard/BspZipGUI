@@ -58,14 +58,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Models\StringHolder.cs" />
-    <Compile Include="Tool\Bspzip.cs" />
-    <Compile Include="Tool\FilePack.cs" />
-    <Compile Include="Tool\Pack.cs" />
-    <Compile Include="Tool\Repack.cs" />
-    <Compile Include="Tool\Settings.cs" />
+    <Compile Include="Models\Abstract\StringBuilderWrapper.cs" />
+    <Compile Include="Models\Abstract\StringWrapper.cs" />
+    <Compile Include="Models\LogText.cs" />
+    <Compile Include="Tool\Execute\Bspzip.cs" />
+    <Compile Include="Tool\Execute\Extract.cs" />
+    <Compile Include="Tool\Execute\FilePack.cs" />
+    <Compile Include="Tool\Execute\Cubemaps.cs" />
+    <Compile Include="Tool\Execute\Pack.cs" />
+    <Compile Include="Tool\Execute\Repack.cs" />
+    <Compile Include="Tool\Utils\FunctionalException.cs" />
+    <Compile Include="Tool\Xml\ToolSettings.cs" />
     <Compile Include="Tool\Utils\Constants.cs" />
-    <Compile Include="Tool\Utils\FilesUtils.cs" />
+    <Compile Include="Tool\Utils\FileUtils.cs" />
     <Compile Include="Tool\Utils\XmlUtils.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -98,6 +103,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="..\.editorconfig">
+      <Link>.editorconfig</Link>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
