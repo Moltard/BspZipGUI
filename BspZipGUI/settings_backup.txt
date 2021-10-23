@@ -3,6 +3,7 @@
   <LastBsp />
   <LastGame>Counter-Strike: Global Offensive</LastGame>
   <LastCustomDirectory>My Current Project</LastCustomDirectory>
+  <LastExtractDirectory />
   <BspZipDirectories>
     <Game>
       <Name>Counter-Strike: Source</Name>
