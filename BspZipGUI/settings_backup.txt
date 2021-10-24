@@ -4,6 +4,7 @@
   <LastGame>Counter-Strike: Global Offensive</LastGame>
   <LastCustomDirectory>My Current Project</LastCustomDirectory>
   <LastExtractDirectory />
+  <IsSyncLogs>False</IsSyncLogs>
   <BspZipDirectories>
     <Game>
       <Name>Counter-Strike: Source</Name>

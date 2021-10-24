@@ -47,9 +47,33 @@ namespace BspZipGUI.Tool.Xml
         public string LastExtractDirectory { get; set; }
 
         /// <summary>
+        /// Is the bspzip output written synchronously (1) or asynchronously (0)
+        /// </summary>
+        [XmlIgnore]
+        public bool IsSyncLogs { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="IsSyncLogs"/>
+        /// </summary>
+        [XmlElement(ElementName = "IsSyncLogs", Order = 5)]
+        public string IsAsyncLogsSerialize
+        {
+            get { return this.IsSyncLogs ? "True" : "False"; }
+            set
+            {
+                if ("True".Equals(value))
+                    this.IsSyncLogs = true;
+                else if ("False".Equals(value))
+                    this.IsSyncLogs = false;
+                else
+                    this.IsSyncLogs = false; // Force Async if not defined in the config
+            }
+        }
+
+        /// <summary>
         /// List of games configs (bspzip.exe directory)
         /// </summary>
-        [XmlArray(ElementName = "BspZipDirectories", Order = 5)]
+        [XmlArray(ElementName = "BspZipDirectories", Order = 6)]
         [XmlArrayItem(ElementName = "Game")]
         //public List<GameConfig> GamesConfigs { get; set; }
         public ObservableCollection<GameConfig> GamesConfigs { get; set; }
@@ -57,14 +81,14 @@ namespace BspZipGUI.Tool.Xml
         /// <summary>
         /// List of maps configs (custom file directory)
         /// </summary>
-        [XmlArray(ElementName = "CustomFilesDirectories", Order = 6)]
+        [XmlArray(ElementName = "CustomFilesDirectories", Order = 7)]
         [XmlArrayItem(ElementName = "Map")]
         public ObservableCollection<MapConfig> MapsConfigs { get; set; }
 
         /// <summary>
         /// List of base directories the tool can browse and the file extensions allowed
         /// </summary>
-        [XmlArray(ElementName = "WhiteListDirectories", Order = 7)]
+        [XmlArray(ElementName = "WhiteListDirectories", Order = 8)]
         [XmlArrayItem(ElementName = "Directory")]
         public ObservableCollection<DirectoryRestrictions> DirectoriesRestrictions { get; set; }
 

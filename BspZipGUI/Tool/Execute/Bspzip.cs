@@ -35,6 +35,11 @@ namespace BspZipGUI.Tool.Execute
         /// </summary>
         protected readonly LogText logsOutput;
 
+        /// <summary>
+        /// Should the logs be written asynchronously or synchronously
+        /// </summary>
+        protected readonly bool isSyncLogsOutput;
+
 
         #endregion
 
@@ -46,6 +51,7 @@ namespace BspZipGUI.Tool.Execute
             this.game = game;
             this.bspPath = bspPath;
             this.logsOutput = logsOutput;
+            isSyncLogsOutput = toolSettings.IsSyncLogs;
         }
 
         #endregion
@@ -74,21 +80,24 @@ namespace BspZipGUI.Tool.Execute
 
             Process p = new Process { StartInfo = startInfo };
 
-            // Async output
-            p.OutputDataReceived += new DataReceivedEventHandler(ProcessOutputHandler);
-            p.ErrorDataReceived += new DataReceivedEventHandler(ProcessErrorHandler);
-            p.Start();
-            p.BeginOutputReadLine();
-            p.WaitForExit();
-            p.Close();
-
-
-            // Sync output
-            //p.Start();
-            //string output = p.StandardOutput.ReadToEnd();
-            //logsOutput.AppendLine(output);
-            //p.WaitForExit();
-
+            if (isSyncLogsOutput)
+            {
+                // Sync output
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                logsOutput.AppendLine(output);
+                p.WaitForExit();
+            }
+            else
+            {
+                // Async output
+                p.OutputDataReceived += new DataReceivedEventHandler(ProcessOutputHandler);
+                p.ErrorDataReceived += new DataReceivedEventHandler(ProcessErrorHandler);
+                p.Start();
+                p.BeginOutputReadLine();
+                p.WaitForExit();
+                p.Close();
+            }
 
             // To stop the output reading
             // p.CancelOutputRead();

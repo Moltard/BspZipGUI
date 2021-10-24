@@ -172,6 +172,8 @@ namespace BspZipGUI
             {
                 GameComboBox.IsEnabled = true;
                 RepackGameComboBox.IsEnabled = true;
+                ExtractBspGameComboBox.IsEnabled = true;
+                CubemapsBspGameComboBox.IsEnabled = true;
                 SettingsGameComboBox.IsEnabled = true;
                 SettingsGamesContainer.Visibility = Visibility.Visible;
             }
@@ -179,6 +181,8 @@ namespace BspZipGUI
             {
                 GameComboBox.IsEnabled = false;
                 RepackGameComboBox.IsEnabled = false;
+                ExtractBspGameComboBox.IsEnabled = false;
+                CubemapsBspGameComboBox.IsEnabled = false;
                 SettingsGameComboBox.IsEnabled = false;
                 SettingsGamesContainer.Visibility = Visibility.Hidden;
             }
