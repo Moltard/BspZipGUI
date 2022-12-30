@@ -58,15 +58,17 @@ namespace BspZipGUI.Tool.Xml
         [XmlElement(ElementName = "IsSyncLogs", Order = 5)]
         public string IsAsyncLogsSerialize
         {
-            get { return this.IsSyncLogs ? "True" : "False"; }
+            // This getter is automatically called when the xml file is serialized
+            get { return IsSyncLogs ? "True" : "False"; }
             set
             {
+                // This setter is automatically called when the xml file is deserialized
                 if ("True".Equals(value))
-                    this.IsSyncLogs = true;
+                    IsSyncLogs = true;
                 else if ("False".Equals(value))
-                    this.IsSyncLogs = false;
+                    IsSyncLogs = false;
                 else
-                    this.IsSyncLogs = false; // Force Async if not defined in the config
+                    IsSyncLogs = false; // Force Async if not defined in the config
             }
         }
 
@@ -92,6 +94,19 @@ namespace BspZipGUI.Tool.Xml
         [XmlArrayItem(ElementName = "Directory")]
         public ObservableCollection<DirectoryRestrictions> DirectoriesRestrictions { get; set; }
 
+        /// <summary>
+        /// List of multi maps configs (multiple custom file directories)
+        /// </summary>
+        [XmlArray(ElementName = "MultiCustomFilesDirectories", Order = 9)]
+        [XmlArrayItem(ElementName = "Map")]
+        public ObservableCollection<MultiMapConfig> MultiMapsConfigs { get; set; }
+
+        /// <summary>
+        /// Last multi custom files directory name loaded by the tool
+        /// </summary>
+        [XmlElement(ElementName = "LastMultiCustomDirectory", Order = 10)]
+        public string LastMultiCustomDirectory { get; set; }
+
         #endregion
 
         #region Constructor
@@ -105,7 +120,8 @@ namespace BspZipGUI.Tool.Xml
         #region Methods - Init Attributes
 
         /// <summary>
-        /// Init the attributes that werent init by the xml (cause of missing parameters). And delete invalid ones
+        /// Initialize the attributes that werent automatically initialized wtih the xml file (cause of missing parameters).<br/>
+        /// And delete any invalid attribute
         /// </summary>
         public void InitAllAttributes()
         {
@@ -139,6 +155,33 @@ namespace BspZipGUI.Tool.Xml
                     }
                 }
             }
+            if (MultiMapsConfigs == null)
+            {
+                InitMultiMapsConfigs();
+            }
+            else
+            {
+                // Delete any invalid map config (missing data that was removed from the xml)
+                for (int i = MultiMapsConfigs.Count - 1; i >= 0; i--)
+                {
+                    if (!MultiMapsConfigs[i].IsValid())
+                    {
+                        MultiMapsConfigs.RemoveAt(i);
+                    }
+                    else
+                    {
+                        // Delete any invalid directory in the list
+                        for (int j = MultiMapsConfigs[i].ListPath.Count - 1; j >= 0; j--)
+                        {
+                            if (MultiMapsConfigs[i].ListPath[j] == null)
+                            {
+                                MultiMapsConfigs[i].ListPath.RemoveAt(j);
+                            }
+                        }
+                    }
+                }
+            }
+
             if (DirectoriesRestrictions == null)
             {
                 InitDirectoriesRestrictions();
@@ -163,6 +206,10 @@ namespace BspZipGUI.Tool.Xml
             {
                 LastCustomDirectory = string.Empty;
             }
+            if (LastMultiCustomDirectory == null)
+            {
+                LastMultiCustomDirectory = string.Empty;
+            }
             if (LastGame == null)
             {
                 LastGame = string.Empty;
@@ -181,6 +228,10 @@ namespace BspZipGUI.Tool.Xml
         {
             MapsConfigs = new ObservableCollection<MapConfig>();
         }
+        private void InitMultiMapsConfigs()
+        {
+            MultiMapsConfigs = new ObservableCollection<MultiMapConfig>();
+        }
         private void InitDirectoriesRestrictions()
         {
             DirectoriesRestrictions = new ObservableCollection<DirectoryRestrictions>();
@@ -191,9 +242,9 @@ namespace BspZipGUI.Tool.Xml
         #region Methods - Find Configs
 
         /// <summary>
-        /// Find the MapConfig (custom files location) corresponding to the given name
+        /// Find the first MapConfig (custom files location) corresponding to the given name
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">name to search</param>
         /// <returns>Return the corresponding MapConfig. null if none found</returns>
         public MapConfig FindMapConfig(string name)
         {
@@ -208,9 +259,26 @@ namespace BspZipGUI.Tool.Xml
         }
 
         /// <summary>
-        /// Find the GameConfig (bspzip.exe location) corresponding to the given name
+        /// Find the first MultiMapConfig (custom files location) corresponding to the given name
         /// </summary>
-        /// <param name="name"></param>
+        /// <param name="name">name to search</param>
+        /// <returns>Return the corresponding MultiMapConfig. null if none found</returns>
+        public MultiMapConfig FindMultiMapConfig(string name)
+        {
+            foreach (MultiMapConfig multiMapConfig in MultiMapsConfigs)
+            {
+                if (name.Equals(multiMapConfig.Name))
+                {
+                    return multiMapConfig;
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Find the first GameConfig (bspzip.exe location) corresponding to the given name
+        /// </summary>
+        /// <param name="name">name to search</param>
         /// <returns>Return the corresponding GameConfig. null if none found</returns>
         public GameConfig FindGameConfig(string name)
         {
@@ -304,7 +372,7 @@ namespace BspZipGUI.Tool.Xml
         /// <summary>
         /// Create a default GameConfig
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new instance of <see cref="GameConfig"/></returns>
         public static GameConfig GetDefaultGameConfig()
         {
             return new GameConfig
@@ -325,9 +393,9 @@ namespace BspZipGUI.Tool.Xml
         public string GameInfoFolder => System.IO.Path.GetDirectoryName(GameInfo);
 
         /// <summary>
-        /// Return true if all values of the GameConfig are not null, false otherwise
+        /// Verify if all values of the GameConfig are not null
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if all value are not null, <c>false</c> otherwise</returns>
         public bool IsValid()
         {
             if (Name != null && BspZip != null && GameInfo != null)
@@ -338,9 +406,9 @@ namespace BspZipGUI.Tool.Xml
         }
 
         /// <summary>
-        /// Return true if the files used exist
+        /// Verify if the bspzip.exe and gameinfo.txt files exist
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if the files exist, <c>false</c> otherwise</returns>
         public bool FilesExist()
         {
             if (System.IO.File.Exists(BspZip) && System.IO.File.Exists(GameInfo))
@@ -413,24 +481,31 @@ namespace BspZipGUI.Tool.Xml
             }
         }
 
+        /// <summary>
+        /// Extra string that will contains the directory path cleaned from extra character
+        /// </summary>
+        [XmlIgnore]
+        public string CleanedPath { get; private set; }
+
         #endregion
 
         #region Constructor
 
         public MapConfig()
         {
+            CleanedPath = null;
         }
 
         /// <summary>
         /// Create a default MapConfig
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new instance of <see cref="MapConfig"/></returns>
         public static MapConfig GetDefaultMapConfig()
         {
             return new MapConfig
             {
                 Name = "New Custom Folder",
-                Path = @"C:/MyMappingProject/CurrentProject/"
+                Path = @"C:\MyMappingProject\CurrentProject"
             };
         }
 
@@ -440,16 +515,17 @@ namespace BspZipGUI.Tool.Xml
 
         /// <summary>
         /// Clean the path of the directory by removing extra '/' within the path
+        /// and storing it in <see cref="CleanedPath"/>
         /// </summary>
         public void CleanPath()
         {
-            Path = Utils.FileUtils.TryGetDirectoryName(Path + Utils.Constants.Slash);
+            CleanedPath = Utils.FileUtils.CleanDirectoryPath(Path);
         }
 
         /// <summary>
-        /// Return true if all values of the MapConfig are not null, false otherwise
+        /// Verify if all values of the MapConfig are not null
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if all value are not null, <c>false</c> otherwise</returns>
         public bool IsValid()
         {
             if (Name != null && Path != null)
@@ -489,6 +565,223 @@ namespace BspZipGUI.Tool.Xml
 
     #endregion
 
+    #region Class - MultiMapConfig
+
+    /// <summary>
+    /// Store a map name and the paths to its custom folders
+    /// </summary>
+    [Serializable]
+    public class MultiMapConfig : INotifyPropertyChanged
+    {
+
+        #region Attributes
+
+        private string name;
+
+        /// <summary>
+        /// Name of the map
+        /// </summary>
+		[XmlElement(Order = 1)]
+        public string Name
+        {
+            get => name;
+            set
+            {
+                if (name != value)
+                {
+                    name = value;
+                    NotifyPropertyChanged("Name");
+                }
+            }
+        }
+
+        /// <summary>
+        /// List of paths to the custom folders with files to pack
+        /// </summary>
+        [XmlArray(ElementName = "Paths", Order = 2)]
+        [XmlArrayItem(ElementName = "Path")]
+        public ObservableCollection<string> ListPath { get; set; }
+
+        /// <summary>
+        /// List of custom folders paths separated by a new line.<br/>
+        /// Used by the Textbox
+        /// </summary>
+        [XmlIgnore]
+        public string Path
+        {
+            get
+            {
+                const string separator = "\n";
+                return string.Join(separator, ListPath);
+            }
+        }
+        
+        /// <summary>
+        /// List of custom folders paths as a dashed list.<br/>
+        /// Used for logs
+        /// </summary>
+        [XmlIgnore]
+        public string PathAsDashedList
+        {
+            get
+            {
+                // Non breaking space = \u00A0
+                const string separator = "\n-\u00A0";
+                return (ListPath.Count > 0 ? "-\u00A0" : "") + string.Join(separator, ListPath);
+            }
+        }
+
+        /// <summary>
+        /// List that will contains all the directories paths cleaned from any extra character.<br/>
+        /// Needed because modifying asynchronously a ObservableCollection is not allowed
+        /// </summary>
+        [XmlIgnore]
+        public HashSet<string> HashSetCleanedPath { get; private set; }
+
+        #endregion
+
+        #region Constructor
+
+        public MultiMapConfig()
+        {
+            HashSetCleanedPath = new HashSet<string>();
+        }
+
+        /// <summary>
+        /// Create a default MultiMapConfig
+        /// </summary>
+        /// <returns>A new instance of <see cref="MultiMapConfig"/></returns>
+        public static MultiMapConfig GetDefaultMultiMapConfig()
+        {
+            return new MultiMapConfig
+            {
+                Name = "New Custom Folders",
+                ListPath = new ObservableCollection<string>()
+            };
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Verify if all values of the MultiMapConfig are not null
+        /// </summary>
+        /// <returns><c>true</c> if all value are not null, <c>false</c> otherwise</returns>
+        public bool IsValid()
+        {
+            if (Name != null && ListPath != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if the list of path is not empty, false otherwise
+        /// </summary>
+        /// <returns></returns>
+        public bool IsNotEmpty()
+        {
+            return ListPath.Count > 0;
+        }
+
+        /// <summary>
+        /// Verify if all custom directories exist
+        /// </summary>
+        /// <returns>True if all custom directories exist, False otherwise</returns>
+        public bool DirectoriesExists()
+        {
+            foreach (string directory in ListPath)
+            {
+                if (!System.IO.Directory.Exists(directory))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Get a list of all the non existing directories, in the Multi Custom folder config
+        /// </summary>
+        /// <returns>List of directories</returns>
+        public List<string> GetNonExistingDirectories()
+        {
+            List<string> listDirectories = new List<string>();
+            foreach (string directory in ListPath)
+            {
+                if (!System.IO.Directory.Exists(directory))
+                {
+                    listDirectories.Add(directory);
+                }
+            }
+            return listDirectories;
+        }
+
+        /// <summary>
+        /// Create a HashSet with all unique directories paths from <see cref="ListPath"/>
+        /// </summary>
+        /// <returns>A HashSet of string</returns>
+        public HashSet<string> GetHashSetFromList()
+        {
+            return new HashSet<string>(ListPath);
+        }
+
+        /// <summary>
+        /// Clear <see cref="ListPath"/> and insert every element from the HashSet parameter
+        /// </summary>
+        /// <param name="directoriesHashSet">List of unique directory path</param>
+        public void SetHashSetToList(HashSet<string> directoriesHashSet)
+        {
+            ListPath.Clear();
+            foreach(string directory in directoriesHashSet)
+            {
+                ListPath.Add(directory);
+            }
+        }
+
+        /// <summary>
+        /// Clean the paths of the directories by removing extra '/' within the list of paths 
+        /// and storing them in <see cref="HashSetCleanedPath"/>
+        /// </summary>
+        public void CleanPaths()
+        {
+            HashSetCleanedPath.Clear();
+            foreach (string path in ListPath)
+            {
+                HashSetCleanedPath.Add(Utils.FileUtils.CleanDirectoryPath(path));
+            }
+        }
+
+        /// <summary>
+        /// Force an GUI update on the list of directory, in the MainWindow
+        /// </summary>
+        public void NotifyDirectoryListUpdate()
+        {
+            // To update the ListBox
+            NotifyPropertyChanged("ListPath");
+            // To update the TextBox
+            NotifyPropertyChanged("Path");
+        }
+
+        #endregion
+
+        #region INotifyPropertyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void NotifyPropertyChanged(string propName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+
+        #endregion
+
+    }
+
+    #endregion
+    
     #region Class - DirectoryRestrictions
 
     /// <summary>
@@ -527,7 +820,7 @@ namespace BspZipGUI.Tool.Xml
         public List<string> AllowedExtension { get; set; }
 
         /// <summary>
-        /// String version of the extensions allowed separated by | 
+        /// String version of the extensions allowed separated by <c>|</c>
         /// </summary>
         [XmlIgnore]
         public string ExtensionStr
@@ -555,7 +848,7 @@ namespace BspZipGUI.Tool.Xml
         /// <summary>
         /// Create a default DirectoryRestrictions
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A new instance of <see cref="DirectoryRestrictions"/></returns>
         public static DirectoryRestrictions GetDefaultDirectoryRestrictions()
         {
             return new DirectoryRestrictions
@@ -570,9 +863,9 @@ namespace BspZipGUI.Tool.Xml
         #region Methods
 
         /// <summary>
-        /// Return true if all values of the DirectoryRestrictions are not null, false otherwise
+        /// Verify if all values of the DirectoryRestrictions are not null
         /// </summary>
-        /// <returns></returns>
+        /// <returns><c>true</c> if all value are not null, <c>false</c> otherwise</returns>
         public bool IsValid()
         {
             if (DirectoryName != null && AllowedExtension != null)

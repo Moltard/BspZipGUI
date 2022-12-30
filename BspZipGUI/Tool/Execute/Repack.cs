@@ -42,6 +42,7 @@ namespace BspZipGUI.Tool.Execute
         public override void Start()
         {
             UpdateSettings();
+            logsOutput.AppendLine();
             try
             {
                 CreateBackupBsp();

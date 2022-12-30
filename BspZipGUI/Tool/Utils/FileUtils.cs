@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace BspZipGUI.Tool.Utils
 {
+    /// <summary>
+    /// Enum to handle File Browser Dialog and Save Browser Dialog
+    /// </summary>
     internal enum FileFilters
     {
         None,
@@ -15,6 +18,9 @@ namespace BspZipGUI.Tool.Utils
         GameinfoTxt
     }
 
+    /// <summary>
+    /// Class containing useful file related functions
+    /// </summary>
     internal static class FileUtils
     {
         #region Constants
@@ -24,19 +30,15 @@ namespace BspZipGUI.Tool.Utils
         private const string filterZip = "ZIP Files (*.zip)| *.zip";
         private const string filterBspZipExe = "BspZip (bspzip.exe)| bspzip.exe|Executable files (*.exe)|*.exe";
 
-
         private const string titleBspInput = "Select a .bsp";
         private const string titleBspZipExe = "Select bspzip.exe file";
         private const string titleGameinfoTxt = "Select gameinfo.txt file";
         private const string titleBspOutput = "Save .bsp as";
         private const string titleZipOutput = "Save .zip as";
  
-        private const string titleFolder = "Select a folder";
-
-        private const string titleSaveAs = "Save as";
-
-        private const string folderSelection = "[Folder Selection]";
-        private const string searchPattern = "*.*";
+        private const string titleDirectory = "Select a directory";
+        private const string directorySelection = "[Folder Selection]";
+        private const string searchPatternAny = "*.*";
 
         #endregion
 
@@ -59,10 +61,10 @@ namespace BspZipGUI.Tool.Utils
         }
 
         /// <summary>
-        /// Get the directory name of a given path<br/>
+        /// Tries to get the directory name of a given path<br/>
         /// Remove any extra '/' in the path and '/' becomes '\'
         /// </summary>
-        /// <param name="path">The path</param>
+        /// <param name="path">The path of a file or directory</param>
         /// <returns>The directory path if successful, null otherwise</returns>
         public static string TryGetDirectoryName(string path)
         {
@@ -77,27 +79,27 @@ namespace BspZipGUI.Tool.Utils
         }
 
         /// <summary>
-        /// Return the list of all files in the given directory and its subdirectories
+        /// Get the list of all files in a given directory and its subdirectories
         /// </summary>
-        /// <param name="directory"></param>
+        /// <param name="directory">The path of the directory</param>
         /// <exception cref="Exception">An exception of any type, if there is an error getting the list of files</exception>
-        /// <returns>Return the path of all files in the directories, null if the directory doesn't exist</returns>
+        /// <returns>The path of all files in the directories, null if the directory doesn't exist</returns>
         public static List<string> GetFilesListRecursive(string directory)
         {
             if (System.IO.Directory.Exists(directory))
             {
-                string[] files = System.IO.Directory.GetFiles(directory, searchPattern, System.IO.SearchOption.AllDirectories);
+                string[] files = System.IO.Directory.GetFiles(directory, searchPatternAny, System.IO.SearchOption.AllDirectories);
                 return new List<string>(files);
             }
             return null;
         }
 
         /// <summary>
-        /// Check if the file name is the same as an expected one
+        /// Check if the name of a file is the same as an expected one
         /// </summary>
-        /// <param name="path"></param>
-        /// <param name="expectedFile"></param>
-        /// <returns></returns>
+        /// <param name="path">The path of the file</param>
+        /// <param name="expectedFile">Expected file name</param>
+        /// <returns>true if it's the same file name, false otherwise</returns>
         public static bool IsFileName(string path, string expectedFile)
         {
             string file = System.IO.Path.GetFileName(path).ToLower();
@@ -105,34 +107,35 @@ namespace BspZipGUI.Tool.Utils
         }
 
         /// <summary>
-        /// Check if the file extension of the file is matching a specific extension
+        /// Check if the extension of a given file is matching a specific extension
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="allowedExtension"></param>
-        /// <returns></returns>
+        /// <param name="fileName">Path of the file</param>
+        /// <param name="allowedExtension">An extension</param>
+        /// <returns>True if the file has the good extension, false otherwise</returns>
         public static bool IsExtension(string fileName, string allowedExtension)
         {
-            string fileExtension = System.IO.Path.GetExtension(fileName);
-            return fileExtension.Equals(allowedExtension);
+            return allowedExtension.Equals(System.IO.Path.GetExtension(fileName));
         }
 
         /// <summary>
-        /// Check if the file extension of the file is matching a list of extensions
+        /// Check if the extension of a given file is matching a list of extensions
         /// </summary>
-        /// <param name="fileName"></param>
-        /// <param name="allowedExtensions"></param>
-        /// <returns></returns>
-        public static bool IsExtension(string fileName, string[] allowedExtensions)
+        /// <param name="fileName">Path of the file</param>
+        /// <param name="allowedExtensions">List of extensions</param>
+        /// <returns>True if the file has the good extension, false otherwise</returns>
+        public static bool IsExtension(string fileName, HashSet<string> allowedExtensions)
         {
-            string fileExtension = System.IO.Path.GetExtension(fileName);
-            foreach (string ext in allowedExtensions)
-            {
-                if (fileExtension.Equals(ext))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return allowedExtensions.Contains(System.IO.Path.GetExtension(fileName));
+        }
+
+        /// <summary>
+        /// Clean the path of a directory by removing extra '/' within the path
+        /// </summary>
+        /// <param name="path">Path of a directory</param>
+        /// <returns>The cleaned directory path</returns>
+        public static string CleanDirectoryPath(string path)
+        {
+            return TryGetDirectoryName(path + Constants.Slash);
         }
 
         #endregion
@@ -140,10 +143,10 @@ namespace BspZipGUI.Tool.Utils
         #region Methods - Dialog File / Folder 
 
         /// <summary>
-        /// Open the File Browser Dialog and return the path of the selected file, null if none
+        /// Open the File Browser Dialog with the given preset (<see cref="FileFilters"/>)
         /// </summary>
-        /// <param name="filter">Filter for the file selection</param>
-        /// <returns></returns>
+        /// <param name="filter">Filter for the preset parameters</param>
+        /// <returns>The path of the selected file, null if none</returns>
         public static string OpenFileDialog(FileFilters filter)
         {
             switch (filter)
@@ -160,7 +163,13 @@ namespace BspZipGUI.Tool.Utils
             }
             return OpenFileDialog(string.Empty, string.Empty);
         }
-        
+
+        /// <summary>
+        /// Open the File Browser Dialog with given parameters
+        /// </summary>
+        /// <param name="filter">Type of files to filter in the File Dialog</param>
+        /// <param name="title">Title of the File Dialog</param>
+        /// <returns></returns>
         private static string OpenFileDialog(string filter, string title)
         {
             Microsoft.Win32.FileDialog fileDialog = new Microsoft.Win32.OpenFileDialog
@@ -177,16 +186,17 @@ namespace BspZipGUI.Tool.Utils
         }
 
         /// <summary>
-        /// Open the File Browser Dialog and return the path of the selected folder, null if none
+        /// Open the File Browser Dialog as a Folder Browser Dialog<br/>
+        /// <b>Way better than the default "System.Windows.Forms.FolderBrowserDialog"</b>
         /// </summary>
-        /// <returns>Returns the selected folder</returns>
+        /// <returns>Returns the selected folder, null if none</returns>
         public static string OpenFolderDialog()
         {
             Microsoft.Win32.FileDialog folderDialog = new Microsoft.Win32.OpenFileDialog
             {
-                CheckFileExists = false,
-                Title = titleFolder,
-                FileName = folderSelection // Default name
+                CheckFileExists = false, // Allow for the selection of a directory
+                Title = titleDirectory,
+                FileName = directorySelection // Default name
             };
             bool? result = folderDialog.ShowDialog();
             if (result == true)
@@ -197,29 +207,38 @@ namespace BspZipGUI.Tool.Utils
         }
 
         /// <summary>
-        /// Open the Save File Browser Dialog with the given settings
+        /// Open the Save File Browser Dialog with the given preset (<see cref="FileFilters"/>) and parameters
         /// </summary>
-        /// <param name="filter">Type of files to filter</param>
+        /// <param name="filter">Filter for the preset parameters</param>
         /// <param name="defaultFileName">Default filename</param>
         /// <param name="defaultExt">Default extension</param>
-        /// <param name="initialDirectory">Intitial directory</param>
-        /// <returns>Return the path of the file to save, null if none</returns>
+        /// <param name="initialDirectory">Intitial directory to open the File Dialog in</param>
+        /// <returns>The path of the file to save, null if none</returns>
         public static string SaveFileDialog(FileFilters filter, string defaultFileName, string defaultExt, string initialDirectory = "")
         {
             switch (filter)
             {
                 case FileFilters.Bsp:
-                    return SaveFileDialog(filterBsp, defaultFileName, defaultExt, titleBspOutput, initialDirectory);
+                    return SaveFileDialog(filterBsp, titleBspOutput, defaultFileName, defaultExt, initialDirectory);
                 case FileFilters.Zip:
-                    return SaveFileDialog(filterZip, defaultFileName, defaultExt, titleBspOutput, initialDirectory);
+                    return SaveFileDialog(filterZip, titleZipOutput, defaultFileName, defaultExt, initialDirectory);
                 case FileFilters.None:
                 default:
                     break;
             }
-            return SaveFileDialog(string.Empty, defaultFileName, defaultExt, string.Empty, initialDirectory);
+            return SaveFileDialog(string.Empty, string.Empty, defaultFileName, defaultExt, initialDirectory);
         }
 
-        private static string SaveFileDialog(string filter, string defaultFileName, string defaultExt, string title, string initialDirectory)
+        /// <summary>
+        /// Open the Save File Browser Dialog with the given parameters
+        /// </summary>
+        /// <param name="filter">Type of files to filter in the File Dialog</param>
+        /// <param name="title">Title of the File Dialog</param>
+        /// <param name="defaultFileName">Default filename</param>
+        /// <param name="defaultExt">Default extension</param>
+        /// <param name="initialDirectory">Intitial directory to open the File Dialog in</param>
+        /// <returns>The path of the file to save, null if none</returns>
+        private static string SaveFileDialog(string filter, string title, string defaultFileName, string defaultExt, string initialDirectory)
         {
             Microsoft.Win32.FileDialog saveDialog = new Microsoft.Win32.SaveFileDialog
             {

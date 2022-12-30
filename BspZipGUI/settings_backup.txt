@@ -25,7 +25,7 @@
   <CustomFilesDirectories>
     <Map>
       <Name>My Current Project</Name>
-      <Path>C:/MyMappingProject/CurrentProject/</Path>
+      <Path>C:\MyMappingProject\CurrentProject</Path>
     </Map>
   </CustomFilesDirectories>
   <WhiteListDirectories>
@@ -103,4 +103,13 @@
       </Extensions>
     </Directory>
   </WhiteListDirectories>
+  <MultiCustomFilesDirectories>
+    <Map>
+      <Name>My Current Projects</Name>
+      <Paths>
+        <Path>C:\MyMappingProject\CurrentProject</Path>
+      </Paths>
+    </Map>
+  </MultiCustomFilesDirectories>
+  <LastMultiCustomDirectory />
 </AppSettings>

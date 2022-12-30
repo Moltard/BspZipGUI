@@ -1,9 +1,20 @@
 ﻿namespace BspZipGUI.Tool.Utils
 {
+    /// <summary>
+    /// Class containing constants used in the app
+    /// </summary>
     internal static class Constants
     {
 
         #region Constants
+
+        /// <summary>
+        /// The max path length correctly supported by Windows.<br/>
+        /// Trying to pack a file that use a path longer than this will break the bspzip.exe process itself.<br/>
+        /// It won't pack any file after encountering the limit.<br/>
+        /// This will only be used to show a warning to the user after the execution.
+        /// </summary>
+        public const int MAX_PATH = 260;
 
         public const string ExtensionBsp = ".bsp";
         public const string ExtensionExe = ".exe";
@@ -25,6 +36,9 @@
 
     }
 
+    /// <summary>
+    /// Class containing constants message used in the GUI
+    /// </summary>
     internal static class MessageConstants
     {
 
@@ -41,9 +55,13 @@
         public const string MessageSettingsUseEmpty = "Generating empty settings";
 
         public const string MessageFileNotBsp = "The file is not .bsp";
-        public const string MessageFileNotFound = "The file doesn't exist";
-        public const string MessageFolderNotFound = "The directory doesn't exist";
+        public const string MessageBspFileNotFound = "The .bsp file doesn't exist";
+        public const string MessageDirectoryNotFound = "The directory doesn't exist";
         public const string MessageCustomFolderNotFound = "The Custom Folder doesn't exist";
+        public const string MessageMultiCustomFolderEmpty = "The list of Custom Folders is empty";
+        public const string MessageMultiCustomFolderNotFound = "One or multiple Custom Folder(s) don't exist";
+        public const string MessageSimpleMultiCustomFolderNotSelected = "Invalid state: No Custom Folder(s) were selected";
+        public const string MessageMultiCustomFolderSettingsNotSelected = "No Custom Folders selected";
         public const string MessageCustomFolderInvalid = "Invalid Custom Folder selected";
         public const string MessageGameNotFound = "Can't find the specified bspzip.exe and/or gameinfo.txt";
         public const string MessageGameInvalid = "Invalid Game selected";
@@ -62,8 +80,11 @@
         public const string MessageCopyBspFail = "Error: Couldn't make a copy of the BSP";
         public const string MessageListFilesNotFound = "Error: Couldn't find the list of files to pack";
         public const string MessageListFilesFail = "Error: Couldn't create the list of files to pack";
+        public const string MessageMaxPathSizeWarning = "One or more file(s) path(s) are longer than 260 characters (MAX_PATH)";
+        public const string MessageMaxPathSizeSuggestion = "Suggestion: Move your custom directory to a shorter path";
+        public const string MessageBspzipPackingWarning = "Warning: bspzip.exe may not have packed all the files correctly";
 
-        public const string MessageWarningWhitelist = "You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory " +
+        public const string MessageWhitelistWarning = "You unchecked \"Use Directory Whitelist\", it will pack every single files from the directory " +
             "and its subdirectories.\nAre you really sure ?\n(Be careful not to use a path like C:\\)";
 
         #endregion
