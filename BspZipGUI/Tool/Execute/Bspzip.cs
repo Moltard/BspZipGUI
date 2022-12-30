@@ -118,7 +118,7 @@ namespace BspZipGUI.Tool.Execute
                 System.IO.File.Delete(backupBsp);
             }
             System.IO.File.Copy(bspPath, backupBsp);
-            logsOutput.AppendLine($"Created a copy of \"{bspPath}\" \n-> \"{backupBsp}\"");
+            logsOutput.AppendLine($"Created a copy of \"{bspPath}\" \n=> \"{backupBsp}\"\n");
         }
 
         /// <summary>

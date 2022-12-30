@@ -158,7 +158,8 @@ namespace BspZipGUI.Tool.Execute
         private void AppendPath(string externalPath, int customDirectoryLength)
         {
             string internalPath = GetInternalPath(externalPath, customDirectoryLength);
-            filesPathsList.Add(new KeyValuePair<string, string>(internalPath, externalPath));
+            if (!filesPathsList.ContainsKey(internalPath))
+                filesPathsList.Add(new KeyValuePair<string, string>(internalPath, externalPath));
         }
 
         /// <summary>
