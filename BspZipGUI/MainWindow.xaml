@@ -6,8 +6,8 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:BspZipGUI"
         mc:Ignorable="d"
-        Title="Moltard's BspZipGUI" Height="500" Width="800" Icon="icon.ico"
-        MinHeight="500" MinWidth="800">
+        Title="Moltard's BspZipGUI" Height="570" Width="930" Icon="icon.ico"
+        MinHeight="570" MinWidth="930">
 
     <Window.Resources>
 
@@ -16,6 +16,7 @@
         <!--#region Strings - Titles-->
 
         <sys:String x:Key="TextTitleBspPacker">Bsp Packer</sys:String>
+        <sys:String x:Key="TextTitleMultiPackerBsp">Bsp Packer - Multiple</sys:String>
         <sys:String x:Key="TextTitleRepackBsp">Bsp Repack</sys:String>
         <sys:String x:Key="TextTitleExtractBsp">Bsp Extract</sys:String>
         <sys:String x:Key="TextTitleCubemapsBsp">Bsp Cubemaps</sys:String>
@@ -29,6 +30,7 @@
         <sys:String x:Key="TextLabelBrowseButton">Browse</sys:String>
         <sys:String x:Key="TextLabelGame">Game</sys:String>
         <sys:String x:Key="TextLabelCustomFolder">Custom Folder</sys:String>
+        <sys:String x:Key="TextLabelMultiCustomFolder">Custom Folders</sys:String>
         <sys:String x:Key="TextLabelBspFile">Bsp File</sys:String>
 
         <!--#endregion-->
@@ -46,10 +48,15 @@
         <sys:String x:Key="TextLabelUseDirWhitelist">Use Directory Whitelist</sys:String>
         <sys:String x:Key="TextTooltipUseDirWhitelist">Only pack defined folders and files (Settings)</sys:String>
 
-        <sys:String x:Key="TextLabelOverrideBSP">Output to a new Bsp</sys:String>
-        <sys:String x:Key="TextTooltipOverrideBSP">Pack the files into a new Bsp</sys:String>
+        <sys:String x:Key="TextLabelOutputToNewBsp">Output to a new Bsp</sys:String>
+        <sys:String x:Key="TextTooltipOutputToNewBsp">Pack the files into a new Bsp</sys:String>
+
+
+        <TextBlock x:Key="TextBlockDescriptionMultiPackBsp" Style="{StaticResource PageDescription}">
+            Pack multiple custom folders into a BSP
+        </TextBlock>
         
-        
+
 
         <!--#endregion-->
 
@@ -95,19 +102,25 @@
 
         <sys:String x:Key="TextHeaderDirWhitelist">Directories Whitelist</sys:String>
         <sys:String x:Key="TextHeaderCustomFolders">Custom Folders</sys:String>
+        <sys:String x:Key="TextHeaderMultiCustomFolders">Custom Folders - Multiple</sys:String>
+
         <sys:String x:Key="TextHeaderGames">Games</sys:String>
 
         <sys:String x:Key="TextLabelName">Name</sys:String>
         <sys:String x:Key="TextLabelButtonAdd">Add...</sys:String>
+        <sys:String x:Key="TextLabelButtonAddDirectory">Add Directory</sys:String>
+        <sys:String x:Key="TextLabelButtonRemoveDirectory">Remove Selected</sys:String>
         <sys:String x:Key="TextLabelButtonDelete">Delete</sys:String>
         <sys:String x:Key="TextLabelButtonSetupGames">Setup Games</sys:String>
         <sys:String x:Key="TextLabelButtonSetupCustomFolder">Setup Custom Folders</sys:String>
+        <sys:String x:Key="TextLabelButtonSetupMultiCustomFolder">Setup Multiple Custom Folders</sys:String>
         <sys:String x:Key="TextLabelButtonSaveSettings">Save Settings</sys:String>
 
         <sys:String x:Key="TextLabelGameBspzipPath">Bspzip Path</sys:String>
         <sys:String x:Key="TextLabelGameGameinfoPath">Gameinfo Path</sys:String>
 
         <sys:String x:Key="TextLabelDirectoryPath">Directory Path</sys:String>
+        <sys:String x:Key="TextLabelDirectoriesPath">Directories</sys:String>
         <sys:String x:Key="TextLabelDirectoryName">Directory Name</sys:String>
         <sys:String x:Key="TextLabelAllowedExtensions">Allowed Extensions</sys:String>
         <sys:String x:Key="TextTooltipAllowedExtensions">Separate extensions by '|'. For example: .vmt|.vtf</sys:String>
@@ -124,8 +137,16 @@
         <DataTemplate x:Key="ToolCustomFoldersListTemplate">
             <TextBlock Text="{Binding Path=Name}"/>
         </DataTemplate>
+        <DataTemplate x:Key="ToolMultiCustomFoldersListTemplate">
+            <TextBlock Text="{Binding Path=Name}"/>
+        </DataTemplate>
         <DataTemplate x:Key="ToolDirectoryWhitelistTemplate">
             <TextBlock Text="{Binding Path=DirectoryName}"/>
+        </DataTemplate>
+
+
+        <DataTemplate x:Key="ToolSettingsMultiCustomFolderTemplateBox">
+            <TextBlock Text="{Binding}"/>
         </DataTemplate>
 
         <!--#endregion-->
@@ -158,7 +179,7 @@
                                 <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
-                            <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="GameComboBox" SelectionChanged="GameComboBox_SelectionChanged" 
+                            <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="PackBspGameComboBox" SelectionChanged="PackBspGameComboBox_SelectionChanged" 
                                      ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
 
                             <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="GameLinkButton" Click="GameLinkButton_Click">
@@ -174,10 +195,10 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelCustomFolder}" />
                             <StackPanel Grid.Column="1">
-                                <ComboBox Style="{StaticResource ToolOptionComboBox}" Name="CustomFolderComboBox" 
-                                          SelectionChanged="CustomFolderComboBox_SelectionChanged" 
+                                <ComboBox Style="{StaticResource ToolOptionComboBox}" Name="PackBspCustomFolderComboBox" 
+                                          SelectionChanged="PackBspCustomFolderComboBox_SelectionChanged" 
                                           ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolCustomFoldersListTemplate}" />
-                                <TextBox Name="CustomFolderPath" Opacity="0.4" Style="{StaticResource ToolOptionTextBox}" 
+                                <TextBox Name="PackBspCustomFolderPath" Opacity="0.4" Style="{StaticResource ToolOptionTextBox}" 
                                          Text="{Binding Path, Mode=OneWay}" IsReadOnly="True" />
                             </StackPanel>
 
@@ -193,22 +214,22 @@
                                 <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
-                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="BspFileTextBox" TextChanged="BspFileTextBox_TextChanged"
-                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="BspFileTextBox_Drop" />
+                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="PackBspFileTextBox" TextChanged="PackBspFileTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="PackBspFileTextBox_Drop" />
 
-                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="BspFileBrowseButton" Click="BspFileBrowseButton_Click" >
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="BspFileBrowseButton" Click="PackBspFileBrowseButton_Click" >
                                 <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
                             </Button>
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
-                            <CheckBox Name="WhitelistCheckbox" HorizontalAlignment="Center" IsChecked="True" 
+                            <CheckBox Name="PackBspWhitelistCheckbox" HorizontalAlignment="Center" IsChecked="True" 
                                       ToolTip="{StaticResource TextTooltipUseDirWhitelist}" Content="{StaticResource TextLabelUseDirWhitelist}" />
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
-                            <CheckBox Name="OverrideBSPCheckbox" HorizontalAlignment="Center" IsChecked="False" 
-                                      ToolTip="{StaticResource TextTooltipOverrideBSP}" Content="{StaticResource TextLabelOverrideBSP}" />
+                            <CheckBox Name="PackBspOutputToNewBspCheckbox" HorizontalAlignment="Center" IsChecked="False" 
+                                      ToolTip="{StaticResource TextTooltipOutputToNewBsp}" Content="{StaticResource TextLabelOutputToNewBsp}" />
                         </Grid>
 
                         <Grid Margin="{StaticResource MarginNewElements}">
@@ -219,6 +240,90 @@
                     </StackPanel>
                 </DockPanel>
             </TabItem>
+
+            <TabItem Name="MultiPackerBspTab">
+                <TabItem.Header>
+                    <TextBlock Text="{StaticResource TextTitleMultiPackerBsp}"/>
+                </TabItem.Header>
+
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Top">
+                        <TextBlock Style="{StaticResource PageTitle}" Text="{StaticResource TextTitleMultiPackerBsp}"/>
+                        <!--<TextBlock Style="{StaticResource PageDescription}" Text="{StaticResource TextDescriptionMultiPackBsp}"/>-->
+                        <ContentControl Content="{StaticResource TextBlockDescriptionMultiPackBsp}"/>
+                        <ContentControl Content="{StaticResource ToolSeparator}"/>
+                    </StackPanel>
+
+                    <StackPanel>
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
+                            <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="MultiPackBspGameComboBox" SelectionChanged="MultiPackGameComboBox_SelectionChanged" 
+                                     ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="MultiGameLinkButton" Click="GameLinkButton_Click">
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupGames}"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelMultiCustomFolder}" />
+                            <StackPanel Grid.Column="1">
+                                <ComboBox Style="{StaticResource ToolOptionComboBox}" Name="MultiPackBspCustomFolderComboBox" 
+                                          SelectionChanged="MultiPackCustomFolderComboBox_SelectionChanged" 
+                                          ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolMultiCustomFoldersListTemplate}" />
+                                <TextBox Name="MultiPackBspCustomFolderPath" Opacity="0.4" Style="{StaticResource ToolOptionTextBox}" Height="100"
+                                         Text="{Binding Path, Mode=OneWay}" IsReadOnly="True" VerticalScrollBarVisibility="Auto" />
+                            </StackPanel>
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="MultiCustomFolderLinkButton" Click="MultiCustomFolderLinkButton_Click">
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonSetupMultiCustomFolder}"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelBspFile}" />
+                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="MultiPackBspFileTextBox" TextChanged="MultiPackBspFileTextBox_TextChanged"
+                                     PreviewDragOver="DragOverTextBoxFix" PreviewDragEnter="DragOverTextBoxFix" PreviewDrop="MultiPackBspFileTextBox_Drop" />
+
+                            <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="MultiBspFileBrowseButton" Click="MultiPackBspFileBrowseButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelBrowseButton}"/>
+                            </Button>
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <CheckBox Name="MultiPackBspWhitelistCheckbox" HorizontalAlignment="Center" IsChecked="True" 
+                                      ToolTip="{StaticResource TextTooltipUseDirWhitelist}" Content="{StaticResource TextLabelUseDirWhitelist}" />
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <CheckBox Name="MultiPackBspOutputToNewBspCheckbox" HorizontalAlignment="Center" IsChecked="False" 
+                                      ToolTip="{StaticResource TextTooltipOutputToNewBsp}" Content="{StaticResource TextLabelOutputToNewBsp}" />
+                        </Grid>
+
+                        <Grid Margin="{StaticResource MarginNewElements}">
+                            <Button Style="{StaticResource ToolExecuteButton}" Name="MultiPackBspButton" IsEnabled="False" Click="MultiPackBspButton_Click" >
+                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonPackBsp}"/>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                </DockPanel>
+            </TabItem>
+
 
             <TabItem Name="RepackBspTab">
                 <TabItem.Header>
@@ -237,7 +342,7 @@
                             <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelGame}" />
-                        <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="RepackGameComboBox" SelectionChanged="RepackGameComboBox_SelectionChanged" 
+                        <ComboBox Grid.Column="1" Style="{StaticResource ToolOptionComboBox}" Name="RepackBspGameComboBox" SelectionChanged="RepackGameComboBox_SelectionChanged" 
                                      ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolGamesListTemplate}" />
 
                         <Button Grid.Column="2" Style="{StaticResource ToolOptionButton}" Name="RepackGameLinkButton" Click="GameLinkButton_Click">
@@ -588,10 +693,80 @@
                                             </Button>
                                         </Grid>
                                     </StackPanel>
-
-
                                 </StackPanel>
                             </TabItem>
+
+                            <TabItem Name="SettingsMultiCustomFoldersTab">
+                                <TabItem.Header>
+                                    <TextBlock Text="{StaticResource TextHeaderMultiCustomFolders}"/>
+                                </TabItem.Header>
+                                <StackPanel>
+                                    <Grid Margin="{StaticResource MarginNewElements}">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
+                                            <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ComboBox Grid.Column="0" Style="{StaticResource ToolOptionComboBox}" Name="SettingsMultiCustomFolderComboBox" 
+                                        ItemsSource="{Binding}" ItemTemplate="{StaticResource ToolMultiCustomFoldersListTemplate}" SelectionChanged="SettingsMultiCustomFolderComboBox_SelectionChanged"  />
+
+                                        <Button Grid.Column="1" Style="{StaticResource ToolOptionButton}" Name="SettingsMultiCustomFolderAddButton" Click="SettingsMultiCustomFolderAddButton_Click"  >
+                                            <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonAdd}"/>
+                                        </Button>
+                                    </Grid>
+
+                                    <StackPanel Name="SettingsMultiCustomFolderContainer" Visibility="Visible">
+                                        <Grid Margin="{StaticResource MarginNewElements}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelName}" />
+                                            <TextBox Grid.Column="1" Style="{StaticResource ToolOptionTextBox}" Name="SettingsMultiCustomFolderName" Text="{Binding Name, Mode=TwoWay}" />
+                                        </Grid>
+
+                                        <Grid Margin="{StaticResource MarginNewElements}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize5}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Style="{StaticResource ToolOptionLabel}" Text="{StaticResource TextLabelDirectoriesPath}" />
+
+
+                                            <ListBox Grid.Column="1" Name="SettingsMultiCustomFolderBox" MinHeight="125" Style="{StaticResource StyleMultiFolderList}" AllowDrop="True" Drop="SettingsMultiCustomFolderDrag_Drop" 
+                                                 SelectionMode="Extended"  ItemsSource="{Binding Path=ListPath}" ItemTemplate="{StaticResource ToolSettingsMultiCustomFolderTemplateBox}"
+                                                     SelectionChanged="SettingsMultiCustomFolderBox_SelectionChanged" >
+                                            </ListBox>
+
+                                            <StackPanel Grid.Column="2">
+
+                                                <Button Style="{StaticResource ToolOptionButton}" Name="SettingsMultiCustomFolderAddDirectoryButton" Click="SettingsMultiCustomFolderAddDirectoryButton_Click"  >
+                                                    <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonAddDirectory}"/>
+                                                </Button>
+
+                                                <Button Style="{StaticResource ToolOptionButton}" Name="SettingsMultiCustomFolderRemoveDirectoryButton" IsEnabled="False" Click="SettingsMultiCustomFolderRemoveDirectoryButton_Click"  >
+                                                    <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonRemoveDirectory}"/>
+                                                </Button>
+
+                                            </StackPanel>
+
+                                        </Grid>
+
+                                        <Grid Margin="{StaticResource MarginNewElements2}">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize1}"/>
+                                                <ColumnDefinition Style="{StaticResource GridColumnSize6}"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <Button Grid.Column="0" Style="{StaticResource ToolOptionButton}" Name="SettingsMultiCustomFolderDeleteButton" Click="SettingsMultiCustomFolderDeleteButton_Click"  >
+                                                <TextBlock Style="{StaticResource ToolOptionButtonLabel}" Text="{StaticResource TextLabelButtonDelete}"/>
+                                            </Button>
+                                        </Grid>
+                                    </StackPanel>
+                                </StackPanel>
+                            </TabItem>
+
                             <TabItem Name="SettingsWhitelistTab">
                                 <TabItem.Header>
                                     <TextBlock Text="{StaticResource TextHeaderDirWhitelist}"/>

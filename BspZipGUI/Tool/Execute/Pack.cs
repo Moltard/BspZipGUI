@@ -21,9 +21,14 @@ namespace BspZipGUI.Tool.Execute
         private readonly MapConfig mapContent;
 
         /// <summary>
+        /// The multiple custom directory with the files to pack
+        /// </summary>
+        private readonly MultiMapConfig multiMapContent;
+
+        /// <summary>
         /// Only pack specific files types in each specific subfolders
         /// </summary>
-        private readonly bool hasRestrictions;
+        private readonly bool useWhitelist;
 
         /// <summary>
         /// Path of the BSP to create
@@ -34,12 +39,20 @@ namespace BspZipGUI.Tool.Execute
 
         #region Constructor
 
-        public Pack(ToolSettings toolSettings, GameConfig game, string bspPath, LogText logsOutput, MapConfig mapContent, string outputBspPath, bool hasRestrictions) :
+        public Pack(ToolSettings toolSettings, GameConfig game, string bspPath, LogText logsOutput, MapConfig mapContent, string outputBspPath, bool useWhitelist) :
             base(toolSettings, game, bspPath, logsOutput)
         {
             this.mapContent = mapContent;
             this.outputBspPath = outputBspPath;
-            this.hasRestrictions = hasRestrictions;
+            this.useWhitelist = useWhitelist;
+        }
+
+        public Pack(ToolSettings toolSettings, GameConfig game, string bspPath, LogText logsOutput, MultiMapConfig multiMapContent, string outputBspPath, bool useWhitelist) :
+            base(toolSettings, game, bspPath, logsOutput)
+        {
+            this.multiMapContent = multiMapContent;
+            this.outputBspPath = outputBspPath;
+            this.useWhitelist = useWhitelist;
         }
 
         #endregion
@@ -55,26 +68,24 @@ namespace BspZipGUI.Tool.Execute
         public override void Start()
         {
             UpdateSettings();
-            // Remove any extra '/'
-            mapContent.CleanPath();
-
-            // The base path doesn't have a final '\'
-            FilePack filePack = new FilePack(mapContent.Path, hasRestrictions, toolSettings.DirectoriesRestrictions);
+            logsOutput.AppendLine();
+            bool hasMaxPathSize;
+            FilePack filePack = new FilePack(GetCustomDirectories(), useWhitelist, toolSettings.DirectoriesRestrictions);
             try
             {
-                filePack.FindAllFiles();
+                hasMaxPathSize = filePack.FindAllFilesToPack();
                 filePack.OutputToFile();
             }
             catch (Exception ex)
             {
                 throw new FilePackCreationException(MessageConstants.MessageListFilesFail, ex);
             }
-            logsOutput.AppendLine("Created " + Constants.FilesListText);
             if (!System.IO.File.Exists(Constants.FilesListText))
             {
                 // Just for safety, but the file is supposed to exist
                 throw new FilePackCreationException(MessageConstants.MessageListFilesNotFound);
             }
+            logsOutput.AppendLine("Created " + Constants.FilesListText);
             if (bspPath.Equals(outputBspPath))
             {
                 // If we override the original BSP, we make a backup
@@ -95,12 +106,24 @@ namespace BspZipGUI.Tool.Execute
             {
                 throw new BspZipExecutionException(MessageConstants.MessageBspzipFail, ex);
             }
-
+            if (hasMaxPathSize)
+            {
+                // One or multiple path longer than MAX_PATH were encountered
+                // bspzip.exe likely didn't pack correctly the files
+                // We add the list to the logs and throw an exception
+                logsOutput.AppendLine($"/!\\ {MessageConstants.MessageMaxPathSizeWarning} :");
+                foreach (string path in filePack.MaxPathSizeList)
+                {
+                    logsOutput.AppendLine($"- {path.Length} : \"{path}\"");
+                }
+                throw new MaxPathSizeLimitException(MessageConstants.MessageMaxPathSizeSuggestion);
+            }
         }
 
         /// <summary>
         /// Return the arguments to launch bspzip.exe, to pack the files in a BSP
         /// </summary>
+        /// <returns><inheritdoc/></returns>
         protected override string GetProcessArguments()
         {
             // bspzip -addlist "<bspfile>" "<listfile>" "<newbspfile>"
@@ -118,16 +141,41 @@ namespace BspZipGUI.Tool.Execute
         {
             toolSettings.LastBsp = bspPath;
             toolSettings.LastGame = game.Name;
-            toolSettings.LastCustomDirectory = mapContent.Name;
+            if (mapContent != null)
+                toolSettings.LastCustomDirectory = mapContent.Name;
+            if (multiMapContent != null)
+                toolSettings.LastMultiCustomDirectory = multiMapContent.Name;
             SaveSettings();
         }
 
+        /// <summary>
+        /// Get the list of custom directories to use for packing
+        /// </summary>
+        /// <returns>A list of directories paths cleaned from any extra character</returns>
+        private ICollection<string> GetCustomDirectories()
+        {
+            // Clean the directories path first
+            CleanCustomDirectoriesPath();
+            if (mapContent != null)
+                return new List<string> { mapContent.CleanedPath };
+            if (multiMapContent != null)
+                return multiMapContent.HashSetCleanedPath;
+            return new List<string>();
+        }
+
+        /// <summary>
+        /// Remove any extra <c>/</c> from the custom directories
+        /// </summary>
+        private void CleanCustomDirectoriesPath()
+        {
+            if (mapContent != null)
+                mapContent.CleanPath();
+            if (multiMapContent != null)
+                multiMapContent.CleanPaths();
+        }
 
         #endregion
 
     }
-
-
-
 
 }

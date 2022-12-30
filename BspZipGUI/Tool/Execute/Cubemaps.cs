@@ -56,6 +56,7 @@ namespace BspZipGUI.Tool.Execute
                 }
                 catch (Exception ex)
                 {
+                    logsOutput.AppendLine();
                     throw new BspBackupCreationException(MessageConstants.MessageCopyBspFail, ex);
                 }
             }
@@ -65,14 +66,15 @@ namespace BspZipGUI.Tool.Execute
             }
             catch (Exception ex)
             {
+                logsOutput.AppendLine();
                 throw new BspZipExecutionException(MessageConstants.MessageBspzipFail, ex);
             }
-
         }
 
         /// <summary>
         /// Return the arguments to launch bspzip.exe, to extract or delete cubemaps from a BSP
         /// </summary>
+        /// <returns><inheritdoc/></returns>
         protected override string GetProcessArguments()
         {
             // bspzip -extractcubemaps "<bspfile>" "<targetPath>"
@@ -99,10 +101,12 @@ namespace BspZipGUI.Tool.Execute
         {
             toolSettings.LastBsp = bspPath;
             toolSettings.LastGame = game.Name;
-            toolSettings.LastExtractDirectory = extractPath;
+            if (isExtractCubemap)
+            {
+                toolSettings.LastExtractDirectory = extractPath;
+            }
             SaveSettings();
         }
-
 
         #endregion
 

@@ -40,7 +40,6 @@ namespace BspZipGUI.Tool.Execute
         /// </summary>
         protected readonly bool isSyncLogsOutput;
 
-
         #endregion
 
         #region Constructor
@@ -59,7 +58,8 @@ namespace BspZipGUI.Tool.Execute
         #region Methods
 
         /// <summary>
-        /// Function to start the bspzip.exe
+        /// Function to start bspzip.exe<br/>
+        /// Implemented by the classes that inherit from <see cref="Bspzip"/>
         /// </summary>
         public abstract void Start();
 
@@ -124,9 +124,8 @@ namespace BspZipGUI.Tool.Execute
         /// <summary>
         /// Get the arguments used to launch bspzip
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The arguments to use for the bspzip process</returns>
         protected abstract string GetProcessArguments();
-
 
         /// <summary>
         /// Save the current settings in settings.xml<br/>
@@ -141,9 +140,9 @@ namespace BspZipGUI.Tool.Execute
             catch (SettingsSerializationException ex)
             {
                 logsOutput.AppendLine(ex.GetMessageAndInner());
+                logsOutput.AppendLine();
             }
         }
-
 
         /// <summary>
         /// Update the values of <see cref="toolSettings"/> based on last parameters used<br/>
@@ -174,6 +173,5 @@ namespace BspZipGUI.Tool.Execute
         #endregion
 
     }
-
 
 }

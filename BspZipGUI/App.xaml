@@ -23,6 +23,8 @@
         <Thickness x:Key="DefaultPadding" Left="5" Top="5" Right="5" Bottom="5"/>
         <Thickness x:Key="DefaultPadding2" Left="10" Top="5" Right="10" Bottom="5"/>
 
+        <Thickness x:Key="MarginMixLargeLtRtSmallDw" Left="10" Top="0" Right="10" Bottom="5"/>
+
         <!--#endregion-->
         
         <!--#region Elements-->
@@ -125,6 +127,12 @@
             <Setter Property="Padding" Value="{StaticResource DefaultPadding}"/>
         </Style>
 
+
+
+        <Style TargetType="ListBox" x:Key="StyleMultiFolderList">
+            <Setter Property="Margin" Value="{StaticResource MarginMixLargeLtRtSmallDw}"/>
+            <Setter Property="Padding" Value="{StaticResource DefaultPadding}"/>
+        </Style>
 
     </Application.Resources>
 </Application>

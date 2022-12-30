@@ -55,16 +55,16 @@ namespace BspZipGUI.Tool.Execute
             {
                 throw new BspZipExecutionException(MessageConstants.MessageBspzipFail, ex);
             }
-
         }
 
         /// <summary>
         /// Return the arguments to launch bspzip.exe, to extract or delete cubemaps from a BSP
         /// </summary>
+        /// <returns><inheritdoc/></returns>
         protected override string GetProcessArguments()
         {
-            // bspzip -extractcubemaps "<bspfile>" "<targetPath>"
-            // bspzip -deletecubemaps "<bspfile>"
+            // bspzip -extract "<bspfile>" "<targetPathZipFile>"
+            // bspzip -extractfiles "<bspfile>" "<targetPathDirectory>"
             StringBuilder sb;
             if (isExtractToZip)
             {

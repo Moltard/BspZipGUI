@@ -68,7 +68,7 @@ namespace BspZipGUI.Tool.Utils
         /// Get the default settings stored in the .exe
         /// </summary>
         /// <exception cref="SettingsSerializationException">If an error happens when reading and parsing the default settings</exception>
-        /// <returns></returns>
+        /// <returns>Parsed settings</returns>
         public static ToolSettings GetSettingsFromResource()
         {
             // If it doesn't exist, we load it from the embedded ressource and recreate it
@@ -76,7 +76,6 @@ namespace BspZipGUI.Tool.Utils
             try
             {
                 xmlText = FileUtils.ReadResourceFile(xmlSettingsBackup);
-                //System.IO.File.WriteAllText(xmlSettings, xmlText);
             }
             catch (Exception ex)
             {
