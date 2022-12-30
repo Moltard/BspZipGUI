@@ -11,7 +11,7 @@ This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/
 
 ## Download
 
-[BspZipGUI v2.0](https://github.com/Moltard/BspZipGUI/releases/latest)
+[BspZipGUI v3.0](https://github.com/Moltard/BspZipGUI/releases/latest)
 
 ## How to use - Bsp Packer
 
@@ -19,11 +19,27 @@ Select a game you defined (3 are setup per default), a custom folder you defined
 
 Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
 
-<img src="Images/MainMenuNew2.jpg" width="60%" />
+<img src="Images/MainMenuNew3.jpg" width="60%" />
 
 Press Pack Bsp.
 
 <img src="Images/LogsEnd.jpg" width="60%" />
+
+
+## How to use - Bsp Multi Packer
+
+Select a game you defined (3 are setup per default), a 'multi custom' folder you defined and load a BSP.
+
+**A multi custom folder contains one or more custom folder. The content of all those folders will be packed into the map**
+
+Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
+
+<img src="Images/MultiPackMenu.jpg" width="60%" />
+
+Press Pack Bsp.
+
+<img src="Images/MultiPackLogs.jpg" width="60%" />
+
 
 ## How to use - Bsp Repack
 
@@ -44,7 +60,6 @@ Select a game you defined (3 are setup per default) and load a BSP.
 Either select a directory (drag drop possible) and click Extract to Directory, or click Extract to Zip.
 
 All packed files will be extracted to the directory/zip file.
-
 
 
 ## How to use - Bsp Cubemaps
