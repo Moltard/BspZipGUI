@@ -70,7 +70,7 @@ Select a game you defined (3 are setup per default) and load a BSP.
 
 Either select a directory (drag drop possible) and click Extract cubemaps, or click Delete cubemaps.
 
-<u>/!\</u> Deleting cubemaps actually delete every VTF files packed. That is how bspzip work.
+<u>/!\\</u> Deleting cubemaps actually delete every VTF files packed. That is how bspzip work.
 
 
 
@@ -100,7 +100,7 @@ To not bloat the UI, one setting can only be changed by modifying **settings.xml
 
 It doesn't really affect the execution, but you can change it if you want by editing the following line:
 
-  <IsSyncLogs>False</IsSyncLogs>
+  \<IsSyncLogs\>False\</IsSyncLogs\>
 
 - **False** means that logs are Asynchronously displayed, which is the default behavior
 - **True** means that logs are Synchronously displayed
