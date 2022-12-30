@@ -76,17 +76,41 @@ Either select a directory (drag drop possible) and click Extract cubemaps, or cl
 
 ## How to setup
 
-Add new games with the 'Add...' button. Delete them with the 'Delete' button.
+### Games
+
+Add new 'games' configs with the 'Add...' button. Delete them with the 'Delete' button.
 
 Setup your games by loading the gameinfo.txt and bspzip.exe.
 
 <img src="Images/SettingsMenu.jpg" width="70%" />
 
-Add new custom folders with the 'Add...' button. Delete them with the 'Delete' button.
+---
+
+### Custom Folders
+
+Add new 'custom folders' configs with the 'Add...' button. Delete them with the 'Delete' button.
 
 Load the folder with the custom files that you want to embed in your map.
 
 <img src="Images/SettingsCustomFolder.jpg" width="70%" />
+
+---
+
+### Multi Custom Folders
+
+Add new 'multi custom folders' configs with the 'Add...' button. Delete them with the 'Delete' button.
+
+Add the folders with the custom files that you want to embed in your map, with the "Add Directory" button.
+
+Remove a folder from the list with Remove Selected.
+
+Drag and dropping is supported.
+
+<img src="Images/SettingsMultiCustomFolder.jpg" width="70%" />
+
+---
+
+### Directories Whitelist
 
 Define a whitelist of subfolders and type of files (through their extensions) that can be packed. 
 
