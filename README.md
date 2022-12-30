@@ -107,6 +107,18 @@ It doesn't really affect the execution, but you can change it if you want by edi
 - Not having the line (if you had old settings), will use Asynchronous mode and next time settings are saved, the value will be at **False**.
 
 
+### MAX_PATH size limit
+
+Windows has a hardcoded limitation for file paths, which affect bspzip.exe.
+
+- [Microsoft Doc](https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation)
+
+If a file path is 260 or more characters, and is packed by bspzip.exe, it will cause issues with packing the rest of the files.
+Because it's not something fixable with this software, I instead added a warning if such case happens.
+
+<img src="Images/MAX_PATH_Warning.jpg" width="60%" />
+
+The solution is simple and just requires you to have your custom folder in a shorter path.
 
 
 ### Developers
