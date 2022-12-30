@@ -19,11 +19,11 @@ Select a game you defined (3 are setup per default), a custom folder you defined
 
 Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
 
-<img src="Images/MainMenuNew3.jpg" width="60%" />
+<img src="Images/MainMenuNew3.jpg" width="70%" />
 
 Press Pack Bsp.
 
-<img src="Images/LogsEnd.jpg" width="60%" />
+<img src="Images/LogsEnd.jpg" width="70%" />
 
 
 ## How to use - Bsp Multi Packer
@@ -34,28 +34,28 @@ Select a game you defined (3 are setup per default), a 'multi custom' folder you
 
 Check 'Use Directory Whitelist' (recommended) to only pack files from whitelisted directories (see Settings).
 
-<img src="Images/MultiPackMenu.jpg" width="60%" />
+<img src="Images/MultiPackMenu.jpg" width="70%" />
 
 Press Pack Bsp.
 
-<img src="Images/MultiPackLogs.jpg" width="60%" />
+<img src="Images/MultiPackLogs.jpg" width="70%" />
 
 
 ## How to use - Bsp Repack
 
 Select a game you defined (3 are setup per default) and load a BSP.
 
-<img src="Images/RepackMenu.jpg" width="60%" />
+<img src="Images/RepackMenu.jpg" width="70%" />
 
 Press Compress Bsp or Decompress Bsp.
 
-<img src="Images/RepackLogs.jpg" width="60%" />
+<img src="Images/RepackLogs.jpg" width="70%" />
 
 ## How to use - Bsp Extract
 
 Select a game you defined (3 are setup per default) and load a BSP.
 
-<img src="Images/ExtractMenu.jpg" width="60%" />
+<img src="Images/ExtractMenu.jpg" width="70%" />
 
 Either select a directory (drag drop possible) and click Extract to Directory, or click Extract to Zip.
 
@@ -66,7 +66,7 @@ All packed files will be extracted to the directory/zip file.
 
 Select a game you defined (3 are setup per default) and load a BSP.
 
-<img src="Images/CubemapsMenu.jpg" width="60%" />
+<img src="Images/CubemapsMenu.jpg" width="70%" />
 
 Either select a directory (drag drop possible) and click Extract cubemaps, or click Delete cubemaps.
 
@@ -80,17 +80,17 @@ Add new games with the 'Add...' button. Delete them with the 'Delete' button.
 
 Setup your games by loading the gameinfo.txt and bspzip.exe.
 
-<img src="Images/SettingsMenu.jpg" width="60%" />
+<img src="Images/SettingsMenu.jpg" width="70%" />
 
 Add new custom folders with the 'Add...' button. Delete them with the 'Delete' button.
 
 Load the folder with the custom files that you want to embed in your map.
 
-<img src="Images/SettingsCustomFolder.jpg" width="60%" />
+<img src="Images/SettingsCustomFolder.jpg" width="70%" />
 
 Define a whitelist of subfolders and type of files (through their extensions) that can be packed. 
 
-<img src="Images/SettingsWhitelist.jpg" width="60%" />
+<img src="Images/SettingsWhitelist.jpg" width="70%" />
 
 (All the subfolders you would need are already setup, but you can edit to your needs)
 
@@ -116,7 +116,7 @@ Windows has a hardcoded limitation for file paths, which affect bspzip.exe.
 If a file path is 260 or more characters, and is packed by bspzip.exe, it will cause issues with packing the rest of the files.
 Because it's not something fixable with this software, I instead added a warning if such case happens.
 
-<img src="Images/MAX_PATH_Warning.jpg" width="60%" />
+<img src="Images/MAX_PATH_Warning.jpg" width="100%" />
 
 The solution is simple and just requires you to have your custom folder in a shorter path.
 
