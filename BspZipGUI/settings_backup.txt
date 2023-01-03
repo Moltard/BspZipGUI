@@ -88,6 +88,7 @@
         <Extension>.mp3</Extension>
         <Extension>.txt</Extension>
         <Extension>.wav</Extension>
+        <Extension>.ogg</Extension>
       </Extensions>
     </Directory>
 	<Directory>
@@ -97,9 +98,10 @@
       </Extensions>
     </Directory>
     <Directory>
-      <DirectoryName>materials/panorama/images/map_icons/screenshots</DirectoryName>
+      <DirectoryName>materials/panorama/images</DirectoryName>
       <Extensions>
         <Extension>.png</Extension>
+        <Extension>.svg</Extension>
       </Extensions>
     </Directory>
   </WhiteListDirectories>
