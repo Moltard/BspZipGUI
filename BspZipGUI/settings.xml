@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <AppSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <LastBsp />
-  <LastGame>Counter-Strike: Global Offensive</LastGame>
+  <LastGame>Counter-Strike: Source</LastGame>
   <LastCustomDirectory>My Current Project</LastCustomDirectory>
   <LastExtractDirectory />
   <IsSyncLogs>False</IsSyncLogs>
+  <UseBspZipPlusPlusArguments>False</UseBspZipPlusPlusArguments>
+  <UseVerboseForPack>False</UseVerboseForPack>
+  <UseVerboseForRepack>False</UseVerboseForRepack>
+  <UseVerboseForExract>False</UseVerboseForExract>
+  <UseVerboseForCubemaps>False</UseVerboseForCubemaps>
+  <ExtraParametersPack />
+  <ExtraParametersRepack>-threads 1</ExtraParametersRepack>
+  <ExtraParametersExtract />
+  <ExtraParametersCubemaps />
   <BspZipDirectories>
     <Game>
       <Name>Counter-Strike: Source</Name>
@@ -12,14 +21,24 @@
       <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Source\cstrike\gameinfo.txt</GameInfo>
     </Game>
     <Game>
-      <Name>Counter-Strike: Global Offensive</Name>
-      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\bin\bspzip.exe</BspZip>
-      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gameinfo.txt</GameInfo>
+      <Name>Team Fortress 2</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf\gameinfo.txt</GameInfo>
     </Game>
     <Game>
       <Name>Half-Life 2</Name>
       <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Half-Life 2\bin\bspzip.exe</BspZip>
       <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Half-Life 2\hl2\gameinfo.txt</GameInfo>
+    </Game>
+    <Game>
+      <Name>Garry's Mod</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\GarrysMod\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\GarrysMod\garrysmod\gameinfo.txt</GameInfo>
+    </Game>
+    <Game>
+      <Name>Counter-Strike: Global Offensive</Name>
+      <BspZip>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\bin\bspzip.exe</BspZip>
+      <GameInfo>C:\Program Files (x86)\Steam\steamapps\common\Counter-Strike Global Offensive\csgo\gameinfo.txt</GameInfo>
     </Game>
   </BspZipDirectories>
   <CustomFilesDirectories>
@@ -88,18 +107,26 @@
         <Extension>.mp3</Extension>
         <Extension>.txt</Extension>
         <Extension>.wav</Extension>
+        <Extension>.ogg</Extension>
       </Extensions>
     </Directory>
-	<Directory>
+    <Directory>
       <DirectoryName>materials/correction</DirectoryName>
       <Extensions>
         <Extension>.raw</Extension>
       </Extensions>
     </Directory>
     <Directory>
-      <DirectoryName>materials/panorama/images/map_icons/screenshots</DirectoryName>
+      <DirectoryName>shaders/fxc</DirectoryName>
+      <Extensions>
+        <Extension>.fxc</Extension>
+      </Extensions>
+    </Directory>
+    <Directory>
+      <DirectoryName>materials/panorama/images</DirectoryName>
       <Extensions>
         <Extension>.png</Extension>
+        <Extension>.svg</Extension>
       </Extensions>
     </Directory>
   </WhiteListDirectories>

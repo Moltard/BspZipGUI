@@ -67,12 +67,29 @@ namespace BspZipGUI.Tool.Execute
         protected override string GetProcessArguments()
         {
             // bspzip -repack [ -compress ] "<bspfile>"
-            StringBuilder sb = new StringBuilder("-repack ");
+            // bspzipplusplus [ -verbose ] -repack [ -compress ] "<bspfile>" [ -threads N ]
+            StringBuilder sb = new StringBuilder("");
+
+            // Verbose mode possible with bspzipplusplus (doesnt exist on default bspzip)
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                if (toolSettings.UseVerboseForRepack)
+                    sb.Append("-verbose ");
+            }
+
+            sb.Append("-repack ");
             if (isCompress)
             {
                 sb.Append("-compress ");
             }
             sb.Append($"\"{bspPath}\"");
+
+            // Extra parameter like "-threads N" exist for bspzipplusplus, so the user may have added them in the settings
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                sb.Append(" " + toolSettings.ExtraParametersRepack);
+            }
+
             return sb.ToString();
         }
 

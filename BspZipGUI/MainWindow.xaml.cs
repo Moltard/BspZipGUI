@@ -111,6 +111,10 @@ namespace BspZipGUI
                 InitDirectoryRestrictionsComboBox();
 
             }
+
+            // Initialize the absolute path to the filesList.txt file
+            Constants.AbsolutePathFilesListText = System.IO.Path.Combine(AppContext.BaseDirectory, Constants.FilesListText);
+
         }
 
         #endregion
@@ -852,6 +856,7 @@ namespace BspZipGUI
             logText.AppendLine($"Game: \"{game.Name}\"\nBSP: \"{bspPath}\"");
             logText.AppendLine($"Custom Folder: \"{mapContent.Path}\"\nOutput BSP: \"{outputBsp}\"");
             logText.AppendLine($"Use Directory Whitelist: {useWhitelist}\n");
+            logText.AppendLine("==========================================================================\n");
             logText.AppendLine(MessageConstants.MessageBspPacking);
 
             ExecuteBspzip(pack);
@@ -980,6 +985,7 @@ namespace BspZipGUI
             logText.AppendLine($"Game: \"{game.Name}\"\nBSP: \"{bspPath}\"");
             logText.AppendLine($"Custom Folders:\n{multiMapContent.PathAsDashedList}\nOutput BSP: \"{outputBsp}\"");
             logText.AppendLine($"Use Directory Whitelist: {useWhitelist}\n");
+            logText.AppendLine("==========================================================================\n");
             logText.AppendLine(MessageConstants.MessageBspPacking);
 
             ExecuteBspzip(multiPack);
@@ -1107,11 +1113,13 @@ namespace BspZipGUI
             if (isCompress)
             {
                 logText.AppendLine("Compress BSP: True\n");
+                logText.AppendLine("==========================================================================\n");
                 logText.AppendLine(MessageConstants.MessageBspRepackCompress);
             }
             else
             {
                 logText.AppendLine("Decompress BSP: True\n");
+                logText.AppendLine("==========================================================================\n");
                 logText.AppendLine(MessageConstants.MessageBspRepackDecompress);
             }
             
@@ -1295,6 +1303,7 @@ namespace BspZipGUI
                 logText.AppendLine("Extract to directory: True");
             }
             logText.AppendLine($"Extract Path: \"{extractPath}\"\n");
+            logText.AppendLine("==========================================================================\n");
             logText.AppendLine(MessageConstants.MessageBspExtractFile);
 
             ExecuteBspzip(extract);
@@ -1464,11 +1473,13 @@ namespace BspZipGUI
             {
                 logText.AppendLine("Extract Cubemaps: True\n");
                 logText.AppendLine($"Extract Path: \"{extractPath}\"\n");
+                logText.AppendLine("==========================================================================\n");
                 logText.AppendLine(MessageConstants.MessageBspExtractCubemaps);
             }
             else
             {
                 logText.AppendLine("Delete Cubemaps: True\n");
+                logText.AppendLine("==========================================================================\n");
                 logText.AppendLine(MessageConstants.MessageBspDeleteCubemaps);
             }
 

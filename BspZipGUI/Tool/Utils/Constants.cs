@@ -29,6 +29,13 @@
         /// </summary>
         public const string FilesListText = "filesList.txt";
 
+        /// <summary>
+        /// Absolute path to the filesList.txt file (next to the executable)<br/>
+        /// The value will be properly set at the app startup
+        /// </summary>
+        public static string AbsolutePathFilesListText = FilesListText;
+
+
         public const char Slash = '/';
         public const char Backslash = '\\';
 

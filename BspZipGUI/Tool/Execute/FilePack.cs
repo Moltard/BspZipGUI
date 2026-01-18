@@ -180,6 +180,14 @@ namespace BspZipGUI.Tool.Execute
         #region Methods - Write List
 
         /// <summary>
+        /// Return the amount of files previously stored in <see cref="filesPathsList"/>
+        /// </summary>
+        public int CountListOfFiles()
+        {
+            return filesPathsList.Count;
+        }
+
+        /// <summary>
         /// Create filesList.txt with the paths of each files, located in <see cref="filesPathsList"/>
         /// </summary>
         /// <exception cref="Exception">In case there is an error during the file creation</exception>

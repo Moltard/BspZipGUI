@@ -68,7 +68,11 @@ namespace BspZipGUI.Tool.Execute
         /// </summary>
         protected void StartProcess()
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo(game.BspZip, GetProcessArguments())
+            string arguments = GetProcessArguments();
+            logsOutput.AppendLine($"Executing \"{game.BspZip}\" with the following arguments:\n   {arguments}\n");
+
+            logsOutput.AppendLine("==========================================================================\n");
+            ProcessStartInfo startInfo = new ProcessStartInfo(game.BspZip, arguments)
             {
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
@@ -103,6 +107,7 @@ namespace BspZipGUI.Tool.Execute
             // p.CancelOutputRead();
             // p.Close()
 
+            logsOutput.AppendLine("==========================================================================\n");
 
         }
 

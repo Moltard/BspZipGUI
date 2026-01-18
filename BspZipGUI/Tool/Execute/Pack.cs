@@ -71,21 +71,23 @@ namespace BspZipGUI.Tool.Execute
             logsOutput.AppendLine();
             bool hasMaxPathSize;
             FilePack filePack = new FilePack(GetCustomDirectories(), useWhitelist, toolSettings.DirectoriesRestrictions);
+            logsOutput.AppendLine("Getting the list of files to pack from the custom folder(s)");
             try
             {
                 hasMaxPathSize = filePack.FindAllFilesToPack();
+                logsOutput.AppendLine($"   Found {filePack.CountListOfFiles()} file(s)");
                 filePack.OutputToFile();
             }
             catch (Exception ex)
             {
                 throw new FilePackCreationException(MessageConstants.MessageListFilesFail, ex);
             }
-            if (!System.IO.File.Exists(Constants.FilesListText))
+            if (!System.IO.File.Exists(Constants.AbsolutePathFilesListText))
             {
                 // Just for safety, but the file is supposed to exist
                 throw new FilePackCreationException(MessageConstants.MessageListFilesNotFound);
             }
-            logsOutput.AppendLine("Created " + Constants.FilesListText);
+            logsOutput.AppendLine("   Created \"" + Constants.AbsolutePathFilesListText + "\" to list all files to pack into the BSP\n");
             if (bspPath.Equals(outputBspPath))
             {
                 // If we override the original BSP, we make a backup
@@ -127,10 +129,27 @@ namespace BspZipGUI.Tool.Execute
         protected override string GetProcessArguments()
         {
             // bspzip -addlist "<bspfile>" "<listfile>" "<newbspfile>"
-            StringBuilder sb = new StringBuilder("-addlist ")
+            // bspzipplusplus [ -verbose ] -addlist "<bspfile>" "<listfile>" "<newbspfile>"
+            StringBuilder sb = new StringBuilder("");
+
+            // Verbose mode possible with bspzipplusplus (doesnt exist on default bspzip)
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                if (toolSettings.UseVerboseForPack)
+                    sb.Append("-verbose ");
+            }
+
+            sb.Append("-addlist ")
                 .Append($"\"{bspPath}\" ")
-                .Append($"\"{Constants.FilesListText}\" ")
+                .Append($"\"{Constants.AbsolutePathFilesListText}\" ")
                 .Append($"\"{outputBspPath}\"");
+
+            // No extra parameter exist for this one with bspzipplusplus, but i let the user add parameters if they want
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                sb.Append(" " + toolSettings.ExtraParametersPack);
+            }
+
             return sb.ToString();
         }
 

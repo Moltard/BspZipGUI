@@ -79,18 +79,35 @@ namespace BspZipGUI.Tool.Execute
         {
             // bspzip -extractcubemaps "<bspfile>" "<targetPath>"
             // bspzip -deletecubemaps "<bspfile>"
-            StringBuilder sb;
+            // bspzipplusplus [ -verbose ] -extract "<bspfile>" "<targetPathZipFile>"
+            // bspzipplusplus [ -verbose ] -extractfiles "<bspfile>" "<targetPathDirectory>"
+            StringBuilder sb = new StringBuilder("");
+
+            // Verbose mode possible with bspzipplusplus (doesnt exist on default bspzip)
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                if (toolSettings.UseVerboseForCubemaps)
+                    sb.Append("-verbose ");
+            }
+
             if (isExtractCubemap)
             {
-                sb = new StringBuilder("-extractcubemaps ")
+                sb.Append("-extractcubemaps ")
                     .Append($"\"{bspPath}\" ")
                     .Append($"\"{extractPath}\"");
             }
             else
             {
-                sb = new StringBuilder("-deletecubemaps ")
+                sb.Append("-deletecubemaps ")
                     .Append($"\"{bspPath}\"");
             }
+
+            // No extra parameter exist for this one with bspzipplusplus, but i let the user add parameters if they want
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                sb.Append(" " + toolSettings.ExtraParametersCubemaps);
+            }
+
             return sb.ToString();
         }
 
