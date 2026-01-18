@@ -73,9 +73,165 @@ namespace BspZipGUI.Tool.Xml
         }
 
         /// <summary>
+        /// Should the new bspzipplusplus arguments be used when executing bspzip (1) or not (0)<br/>
+        /// Since using them on the default bspzip.exe is gonna cause it to not work, i added this to globally
+        /// turn on and off the usage of all the following arguments
+        /// </summary>
+        [XmlIgnore]
+        public bool UseBspZipPlusPlusArguments { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="UseVerbosePack"/>
+        /// </summary>
+        [XmlElement(ElementName = "UseBspZipPlusPlusArguments", Order = 6)]
+        public string UseBspZipPlusPlusArgumentsSerialize
+        {
+            // This getter is automatically called when the xml file is serialized
+            get { return UseBspZipPlusPlusArguments ? "True" : "False"; }
+            set
+            {
+                // This setter is automatically called when the xml file is deserialized
+                if ("True".Equals(value))
+                    UseBspZipPlusPlusArguments = true;
+                else if ("False".Equals(value))
+                    UseBspZipPlusPlusArguments = false;
+                else
+                    UseBspZipPlusPlusArguments = false; // Force No Use if not defined in the config
+            }
+        }
+
+        /// <summary>
+        /// Will the bspzip "PACK" execution use the -verbose parameter (1) or not (0)
+        /// </summary>
+        [XmlIgnore]
+        public bool UseVerboseForPack { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="UseVerbosePack"/>
+        /// </summary>
+        [XmlElement(ElementName = "UseVerboseForPack", Order = 7)]
+        public string UseVerboseForPackSerialize
+        {
+            // This getter is automatically called when the xml file is serialized
+            get { return UseVerboseForPack ? "True" : "False"; }
+            set
+            {
+                // This setter is automatically called when the xml file is deserialized
+                if ("True".Equals(value))
+                    UseVerboseForPack = true;
+                else if ("False".Equals(value))
+                    UseVerboseForPack = false;
+                else
+                    UseVerboseForPack = false; // Force No Verbose if not defined in the config
+            }
+        }
+
+        /// <summary>
+        /// Will the bspzip "REPACK" execution use the -verbose parameter (1) or not (0)
+        /// </summary>
+        [XmlIgnore]
+        public bool UseVerboseForRepack { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="UseVerboseForRepack"/>
+        /// </summary>
+        [XmlElement(ElementName = "UseVerboseForRepack", Order = 8)]
+        public string UseVerboseForRepackSerialize
+        {
+            // This getter is automatically called when the xml file is serialized
+            get { return UseVerboseForRepack ? "True" : "False"; }
+            set
+            {
+                // This setter is automatically called when the xml file is deserialized
+                if ("True".Equals(value))
+                    UseVerboseForRepack = true;
+                else if ("False".Equals(value))
+                    UseVerboseForRepack = false;
+                else
+                    UseVerboseForRepack = false; // Force No Verbose if not defined in the config
+            }
+        }
+
+        /// <summary>
+        /// Will the bspzip "EXTRACT" execution use the -verbose parameter (1) or not (0)
+        /// </summary>
+        [XmlIgnore]
+        public bool UseVerboseForExract { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="UseVerboseForExract"/>
+        /// </summary>
+        [XmlElement(ElementName = "UseVerboseForExract", Order = 9)]
+        public string UseVerboseForExractSerialize
+        {
+            // This getter is automatically called when the xml file is serialized
+            get { return UseVerboseForExract ? "True" : "False"; }
+            set
+            {
+                // This setter is automatically called when the xml file is deserialized
+                if ("True".Equals(value))
+                    UseVerboseForExract = true;
+                else if ("False".Equals(value))
+                    UseVerboseForExract = false;
+                else
+                    UseVerboseForExract = false; // Force No Verbose if not defined in the config
+            }
+        }
+
+        /// <summary>
+        /// Will the bspzip "CUBEMAPS" execution use the -verbose parameter (1) or not (0)
+        /// </summary>
+        [XmlIgnore]
+        public bool UseVerboseForCubemaps { get; private set; }
+
+        /// <summary>
+        /// Serialized value to represent <see cref="UseVerboseForCubemaps"/>
+        /// </summary>
+        [XmlElement(ElementName = "UseVerboseForCubemaps", Order = 10)]
+        public string UseVerboseForCubemapsSerialize
+        {
+            // This getter is automatically called when the xml file is serialized
+            get { return UseVerboseForCubemaps ? "True" : "False"; }
+            set
+            {
+                // This setter is automatically called when the xml file is deserialized
+                if ("True".Equals(value))
+                    UseVerboseForCubemaps = true;
+                else if ("False".Equals(value))
+                    UseVerboseForCubemaps = false;
+                else
+                    UseVerboseForCubemaps = false; // Force No Verbose if not defined in the config
+            }
+        }
+
+        /// <summary>
+        /// Extra parameters that will be added at the end of the bspzip command for "PACK"
+        /// </summary>
+        [XmlElement(ElementName = "ExtraParametersPack", Order = 11)]
+        public string ExtraParametersPack { get; set; }
+
+        /// <summary>
+        /// Extra parameters that will be added at the end of the bspzip command for "REPACK"
+        /// </summary>
+        [XmlElement(ElementName = "ExtraParametersRepack", Order = 12)]
+        public string ExtraParametersRepack { get; set; }
+
+        /// <summary>
+        /// Extra parameters that will be added at the end of the bspzip command for "EXTRACT"
+        /// </summary>
+        [XmlElement(ElementName = "ExtraParametersExtract", Order = 13)]
+        public string ExtraParametersExtract { get; set; }
+
+        /// <summary>
+        /// Extra parameters that will be added at the end of the bspzip command for "CUBEMAPS"
+        /// </summary>
+        [XmlElement(ElementName = "ExtraParametersCubemaps", Order = 14)]
+        public string ExtraParametersCubemaps { get; set; }
+
+        /// <summary>
         /// List of games configs (bspzip.exe directory)
         /// </summary>
-        [XmlArray(ElementName = "BspZipDirectories", Order = 6)]
+        [XmlArray(ElementName = "BspZipDirectories", Order = 15)]
         [XmlArrayItem(ElementName = "Game")]
         //public List<GameConfig> GamesConfigs { get; set; }
         public ObservableCollection<GameConfig> GamesConfigs { get; set; }
@@ -83,28 +239,28 @@ namespace BspZipGUI.Tool.Xml
         /// <summary>
         /// List of maps configs (custom file directory)
         /// </summary>
-        [XmlArray(ElementName = "CustomFilesDirectories", Order = 7)]
+        [XmlArray(ElementName = "CustomFilesDirectories", Order = 16)]
         [XmlArrayItem(ElementName = "Map")]
         public ObservableCollection<MapConfig> MapsConfigs { get; set; }
 
         /// <summary>
         /// List of base directories the tool can browse and the file extensions allowed
         /// </summary>
-        [XmlArray(ElementName = "WhiteListDirectories", Order = 8)]
+        [XmlArray(ElementName = "WhiteListDirectories", Order = 17)]
         [XmlArrayItem(ElementName = "Directory")]
         public ObservableCollection<DirectoryRestrictions> DirectoriesRestrictions { get; set; }
 
         /// <summary>
         /// List of multi maps configs (multiple custom file directories)
         /// </summary>
-        [XmlArray(ElementName = "MultiCustomFilesDirectories", Order = 9)]
+        [XmlArray(ElementName = "MultiCustomFilesDirectories", Order = 18)]
         [XmlArrayItem(ElementName = "Map")]
         public ObservableCollection<MultiMapConfig> MultiMapsConfigs { get; set; }
 
         /// <summary>
         /// Last multi custom files directory name loaded by the tool
         /// </summary>
-        [XmlElement(ElementName = "LastMultiCustomDirectory", Order = 10)]
+        [XmlElement(ElementName = "LastMultiCustomDirectory", Order = 19)]
         public string LastMultiCustomDirectory { get; set; }
 
         #endregion
@@ -217,6 +373,22 @@ namespace BspZipGUI.Tool.Xml
             if (LastExtractDirectory == null)
             {
                 LastExtractDirectory = string.Empty;
+            }
+            if (ExtraParametersPack == null)
+            {
+                ExtraParametersPack = string.Empty;
+            }
+            if (ExtraParametersRepack == null)
+            {
+                ExtraParametersRepack = string.Empty;
+            }
+            if (ExtraParametersExtract == null)
+            {
+                ExtraParametersExtract = string.Empty;
+            }
+            if (ExtraParametersCubemaps == null)
+            {
+                ExtraParametersCubemaps = string.Empty;
             }
         }
 

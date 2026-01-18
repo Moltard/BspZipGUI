@@ -65,19 +65,36 @@ namespace BspZipGUI.Tool.Execute
         {
             // bspzip -extract "<bspfile>" "<targetPathZipFile>"
             // bspzip -extractfiles "<bspfile>" "<targetPathDirectory>"
-            StringBuilder sb;
+            // bspzipplusplus [ -verbose ] -extract "<bspfile>" "<targetPathZipFile>"
+            // bspzipplusplus [ -verbose ] -extractfiles "<bspfile>" "<targetPathDirectory>"
+            StringBuilder sb = new StringBuilder("");
+
+            // Verbose mode possible with bspzipplusplus (doesnt exist on default bspzip)
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                if (toolSettings.UseVerboseForExract)
+                    sb.Append("-verbose ");
+            }
+
             if (isExtractToZip)
             {
-                sb = new StringBuilder("-extract ")
+                sb.Append("-extract ")
                     .Append($"\"{bspPath}\" ")
                     .Append($"\"{extractPath}\"");
             }
             else
             {
-                sb = new StringBuilder("-extractfiles ")
+                sb.Append("-extractfiles ")
                     .Append($"\"{bspPath}\" ")
                     .Append($"\"{extractPath}\"");
             }
+
+            // No extra parameter exist for this one with bspzipplusplus, but i let the user add parameters if they want
+            if (toolSettings.UseBspZipPlusPlusArguments)
+            {
+                sb.Append(" " + toolSettings.ExtraParametersExtract);
+            }
+
             return sb.ToString();
         }
 

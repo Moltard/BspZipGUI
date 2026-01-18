@@ -9,9 +9,13 @@ It can be used for any Source Engine game that provide a bspzip.exe.
 
 This tool idea is based on [Geotavros's BspZipGui](https://github.com/geotavros/BspZipGui) .
 
+**2026 update: The tool is <u>fully compatible</u> with BSPZIP++ by ficool2.**<br/>
+Download BSPZIP++ here : [HammerPlusPlus Tools](https://ficool2.github.io/HammerPlusPlus-Website/tools.html)
+
+
 ## Download
 
-[BspZipGUI v3.0](https://github.com/Moltard/BspZipGUI/releases/latest)
+[BspZipGUI v4.0](https://github.com/Moltard/BspZipGUI/releases/latest)
 
 ## How to use - Bsp Packer
 
@@ -96,16 +100,76 @@ Define a whitelist of subfolders and type of files (through their extensions) th
 
 ### Extra setting
 
-To not bloat the UI, one setting can only be changed by modifying **settings.xml**, which is the Asynchronous / Synchronous log output. When bspzip.exe is getting executed, you can either get the output of the process as it is getting executed (Async) or get all of it at once after it has finished (Sync).
+To not bloat the UI, multiples settings can only be changed by modifying **settings.xml**.
+
+<hr/>
+
+#### Asynchronous / Synchronous log output
+
+When bspzip.exe is getting executed, you can either get the output of the process as it is getting executed (Async) or get all of it at once after it has finished (Sync).
 
 It doesn't really affect the execution, but you can change it if you want by editing the following line:
 
-  \<IsSyncLogs\>False\</IsSyncLogs\>
+- `<IsSyncLogs>False</IsSyncLogs>`
 
+Meaning of the values :
 - **False** means that logs are Asynchronously displayed, which is the default behavior
 - **True** means that logs are Synchronously displayed
 - Not having the line (if you had old settings), will use Asynchronous mode and next time settings are saved, the value will be at **False**.
 
+<hr/>
+
+#### BspZipPlusPlus related settings
+
+With the **release of BSPZIP++ at the start of 2026**, it turned out this tool was not compatible directly with it.<br/>
+Due to the usage of a relative path for the `filesList.txt` file used to list all the files to pack, it couldn't execute properly bspzipplusplus.exe, as an absolute path was required.<br/>
+This issue is now fixed in the latest release.
+
+BSPZIP++ also added new features, which werent in the default BSPZIP by Valve, so this tool programmed to be able to use them :
+- `-verbose` parameter
+- `-threads N` parameter for the Repack mode
+
+I added extra parameters in the **settings.xml** file, which can only be edited directly in it (not with the tool).
+Those new parameters will let you use the new features of BSPZIP++
+
+The parameters are the following :
+
+- `<UseBspZipPlusPlusArguments>False</UseBspZipPlusPlusArguments>`
+- `<UseVerboseForPack>False</UseVerboseForPack>`
+- `<UseVerboseForRepack>False</UseVerboseForRepack>`
+- `<UseVerboseForExract>False</UseVerboseForExract>`
+- `<UseVerboseForCubemaps>False</UseVerboseForCubemaps>`
+- `<ExtraParametersPack></ExtraParametersPack>`
+- `<ExtraParametersRepack>-threads 1</ExtraParametersRepack>`
+- `<ExtraParametersExtract></ExtraParametersExtract>`
+- `<ExtraParametersCubemaps></ExtraParametersCubemaps>`
+
+The setting `UseBspZipPlusPlusArguments` when equals to `True` will make the execution of BSPZIP/BSPZIP++ also use the others parameters associated to the current mode.<br/>
+**If you are not using BSPZIP++, make sure to keep it at `False`**, because the **default bspzip.exe** will not like any extra unknown parameter and it will not execute correctly.
+
+- If the mode is **PACK** :
+    - If the setting `UseVerboseForPack` is equals to `True`, then the `-verbose` parameter will be added at the start of the command
+    - The value of the setting `ExtraParametersPack` will be appended at the end of the command as an extra parameter
+        - If the setting is empty, then just an empty string will be appended, which doesn't affect anything
+- If the mode is **REPACK** :
+    - If the setting `UseVerboseForPack` is equals to `True`, then the `-verbose` parameter will be added at the start of the command
+    - The value of the setting `ExtraParametersPack` will be appended at the end of the command as an extra parameter
+        - If the setting is empty, then just an empty string will be appended, which doesn't affect anything
+        - This is the setting where you would add `-threads N`, for example `-threads 2`
+- If the mode is **EXTRACT** :
+    - If the setting `UseVerboseForPack` is equals to `True`, then the `-verbose` parameter will be added at the start of the command
+    - The value of the setting `ExtraParametersPack` will be appended at the end of the command as an extra parameter
+        - If the setting is empty, then just an empty string will be appended, which doesn't affect anything
+- If the mode is **CUBEMAPS** :
+    - If the setting `UseVerboseForPack` is equals to `True`, then the `-verbose` parameter will be added at the start of the command
+    - The value of the setting `ExtraParametersPack` will be appended at the end of the command as an extra parameter
+        - If the setting is empty, then just an empty string will be appended, which doesn't affect anything
+
+**Do note that the extra parameters are only important for the REPACK mode** since it's the only one that really has a new parameter (`-threads N`).<br/>
+But I added the settings for all modes because why not.<br/>
+That will make this tool still compatible with any future new parameters that could get added to BSPZIP++
+
+<hr/>
 
 ### MAX_PATH size limit
 

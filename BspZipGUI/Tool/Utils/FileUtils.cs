@@ -28,10 +28,10 @@ namespace BspZipGUI.Tool.Utils
         private const string filterGameinfoTxt = "Gameinfo (gameinfo.txt)|gameinfo.txt|Text files (*.txt)|*.txt|All files (*.*)|*.*";
         private const string filterBsp = "BSP Files (*.bsp)| *.bsp";
         private const string filterZip = "ZIP Files (*.zip)| *.zip";
-        private const string filterBspZipExe = "BspZip (bspzip.exe)| bspzip.exe|Executable files (*.exe)|*.exe";
+        private const string filterBspZipExe = "BspZip (bspzip.exe)|bspzip*.exe|Executable files (*.exe)|*.exe";
 
         private const string titleBspInput = "Select a .bsp";
-        private const string titleBspZipExe = "Select bspzip.exe file";
+        private const string titleBspZipExe = "Select bspzip.exe / bspzipplusplus.exe file";
         private const string titleGameinfoTxt = "Select gameinfo.txt file";
         private const string titleBspOutput = "Save .bsp as";
         private const string titleZipOutput = "Save .zip as";
