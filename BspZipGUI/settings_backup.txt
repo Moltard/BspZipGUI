@@ -119,7 +119,7 @@
     <Directory>
       <DirectoryName>shaders/fxc</DirectoryName>
       <Extensions>
-        <Extension>.fxc</Extension>
+        <Extension>.vcs</Extension>
       </Extensions>
     </Directory>
     <Directory>
